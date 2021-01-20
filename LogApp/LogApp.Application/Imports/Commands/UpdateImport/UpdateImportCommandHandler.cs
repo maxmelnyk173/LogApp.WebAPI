@@ -30,6 +30,7 @@ namespace LogApp.Application.Imports.Commands.UpdateImport
             entity.TruckNumber = request.TruckNumber;
             entity.DriverDetails = request.DriverDetails;
             entity.TruckType = request.TruckType;
+            entity.Route = request.Route;
             entity.Price = request.Price;
             entity.PickUpDate = request.PickUpDate;
             entity.DeliveryDate = request.DeliveryDate;

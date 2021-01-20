@@ -31,11 +31,12 @@ namespace LogApp.Application.Exports.Queries.GetExportById
                                             CarrierName = export.Carrier.Name,
                                             DriverDetails = export.DriverDetails,
                                             TruckType = export.TruckType,
+                                            Route = export.Route,
                                             Price = export.Price,
                                             PickUpDate = export.PickUpDate,
                                             DeliveryDate = export.DeliveryDate,
                                             LogisticsNotes = export.LogisticsNotes,
-                                            Orders = export.Orders.Select(o => new OrderVm
+                                            Orders = export.Orders.Select(o => new ExportOrderVm
                                             {
                                                 Id = o.Id,
                                                 LotName = o.LotName,

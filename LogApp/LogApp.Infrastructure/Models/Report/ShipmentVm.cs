@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace LogApp.Application.Imports.Queries
+namespace LogApp.Infrastructure.Models.Report
 {
-    public class ImportVm
+    public class ShipmentVm
     {
-        public ImportVm()
+        public ShipmentVm()
         {
-            Orders = new List<ImportOrderVm>();
+            Orders = new List<ShipmentOrderVm>();
         }
 
         public Guid Id { get; set; }
@@ -17,8 +18,6 @@ namespace LogApp.Application.Imports.Queries
         public string CarrierName { get; set; }
 
         public string TruckNumber { get; set; }
-
-        public string DriverDetails { get; set; }
 
         public string TruckType { get; set; }
 
@@ -30,8 +29,6 @@ namespace LogApp.Application.Imports.Queries
 
         public DateTime DeliveryDate { get; set; }
 
-        public string LogisticsNotes { get; set; }
-
-        public ICollection<ImportOrderVm> Orders { get; set; }
+        public ICollection<ShipmentOrderVm> Orders { get; set; }
     }
 }

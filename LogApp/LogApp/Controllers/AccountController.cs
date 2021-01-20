@@ -43,14 +43,12 @@ namespace LogApp.Controllers
         }
 
         [HttpGet("roles")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<string>>> GetRoles()
         {
             return Ok(await roleManager.Roles.Select(n => n.Name).ToListAsync());
         }
 
         [HttpGet("users")]
-        [Authorize]
         public async Task<ActionResult<List<UserVm>>> GetUsers()
         {
             var result = await userManager.Users
@@ -228,6 +226,7 @@ namespace LogApp.Controllers
                 expires: DateTime.UtcNow.AddHours(3),
                 signingCredentials: credentials
                 );
+
             return token;
         }
     }

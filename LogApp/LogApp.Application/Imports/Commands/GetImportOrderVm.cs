@@ -2,7 +2,7 @@
 
 namespace LogApp.Application.Imports.Commands
 {
-    public class OrderVm
+    public class GetImportOrderVm
     {
         public Guid Id { get; set; }
     }

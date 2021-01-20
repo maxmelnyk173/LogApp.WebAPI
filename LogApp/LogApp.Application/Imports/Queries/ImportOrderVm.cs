@@ -2,7 +2,7 @@
 
 namespace LogApp.Application.Imports.Queries
 {
-    public class OrderVm
+    public class ImportOrderVm
     {
         public Guid Id { get; set; }
 

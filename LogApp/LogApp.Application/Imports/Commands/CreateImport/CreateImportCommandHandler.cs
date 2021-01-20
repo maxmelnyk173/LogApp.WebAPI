@@ -25,6 +25,7 @@ namespace LogApp.Application.Imports.Commands.CreateImport
                 TruckNumber = request.TruckNumber,
                 DriverDetails = request.DriverDetails,
                 TruckType = request.TruckType,
+                Route = request.Route,
                 Price = request.Price,
                 PickUpDate = request.PickUpDate,
                 DeliveryDate = request.DeliveryDate,

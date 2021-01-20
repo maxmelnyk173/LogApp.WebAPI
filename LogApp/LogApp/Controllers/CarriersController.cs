@@ -15,7 +15,6 @@ namespace LogApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CarriersController : ApiController
     {
         [HttpGet]

@@ -23,6 +23,8 @@ namespace LogApp.Domain.Entities
 
         public string TruckType { get; set; }
 
+        public string Route { get; set; }
+
         public decimal Price { get; set; }
 
         public DateTime PickUpDate { get; set; }

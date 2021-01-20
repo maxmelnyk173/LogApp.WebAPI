@@ -2,7 +2,7 @@
 
 namespace LogApp.Application.Exports.Commands
 {
-    public class OrderVm
+    public class GetExportOrderVm
     {
         public Guid Id { get; set; }
     }

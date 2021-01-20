@@ -31,11 +31,12 @@ namespace LogApp.Application.Imports.Queries.GetImportsList
                                             CarrierName = import.Carrier.Name,
                                             DriverDetails = import.DriverDetails,
                                             TruckType = import.TruckType,
+                                            Route = import.Route,
                                             Price = import.Price,
                                             PickUpDate = import.PickUpDate,
                                             DeliveryDate = import.DeliveryDate,
                                             LogisticsNotes = import.LogisticsNotes,
-                                            Orders = import.Orders.Select(o => new OrderVm
+                                            Orders = import.Orders.Select(o => new ImportOrderVm
                                             {
                                                 Id = o.Id,
                                                 LotName = o.LotName,

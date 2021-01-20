@@ -7,7 +7,7 @@ namespace LogApp.Application.Exports.Queries
     {
         public ExportVm()
         {
-            Orders = new List<OrderVm>();
+            Orders = new List<ExportOrderVm>();
         }
 
         public Guid Id { get; set; }
@@ -22,6 +22,8 @@ namespace LogApp.Application.Exports.Queries
 
         public string TruckType { get; set; }
 
+        public string Route { get; set; }
+
         public decimal Price { get; set; }
 
         public DateTime PickUpDate { get; set; }
@@ -30,6 +32,6 @@ namespace LogApp.Application.Exports.Queries
 
         public string LogisticsNotes { get; set; }
 
-        public ICollection<OrderVm> Orders { get; set; }
+        public ICollection<ExportOrderVm> Orders { get; set; }
     }
 }
