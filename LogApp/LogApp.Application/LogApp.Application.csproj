@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <Folder Include="Imports\Validators\" />
-    <Folder Include="Exports\Validators\" />
   </ItemGroup>
 
 </Project>

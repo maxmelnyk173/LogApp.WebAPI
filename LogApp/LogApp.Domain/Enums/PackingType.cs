@@ -2,7 +2,7 @@
 {
     public enum PackingType
     {
-        pallet = 1,
-        box = 2
+        Pallet = 1,
+        Box = 2
     }
 }

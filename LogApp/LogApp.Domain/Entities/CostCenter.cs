@@ -4,13 +4,8 @@ using System.Collections.Generic;
 
 namespace LogApp.Domain.Entities
 {
-    public class Business : AuditEntity
+    public class CostCenter : AuditEntity
     {
-        public Business()
-        {
-            Orders = new HashSet<Order>();
-        }
-
         public Guid Id { get; set; }
 
         public string Name { get; set; }

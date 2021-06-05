@@ -18,7 +18,7 @@ namespace LogApp.Application.Businesses.Commands.CreateBusiness
 
         public async Task<Guid> Handle(CreateBusinessCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Business()
+            var entity = new CostCenter()
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,

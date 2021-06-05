@@ -23,7 +23,7 @@ namespace LogApp.Application.Imports.Commands.DeleteImport
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Import), request.Id);
+                throw new NotFoundException(nameof(Shipment), request.Id);
             }
 
             _context.Imports.Remove(entity);

@@ -18,7 +18,7 @@ namespace LogApp.Application.Imports.Commands.CreateImport
 
         public async Task<Guid> Handle(CreateImportCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Import()
+            var entity = new Shipment()
             {
                 Id = Guid.NewGuid(),
                 CarrierId = request.CarrierId,

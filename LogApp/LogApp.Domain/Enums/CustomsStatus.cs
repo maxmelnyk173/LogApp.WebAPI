@@ -2,7 +2,8 @@
 {
     public enum CustomsStatus
     {
-        Partially,
-        Completed
+        Notstarted = 1,
+        Partially = 2,
+        Completed = 3
     }
 }

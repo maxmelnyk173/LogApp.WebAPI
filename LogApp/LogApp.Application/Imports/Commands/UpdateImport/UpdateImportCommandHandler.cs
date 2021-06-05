@@ -23,7 +23,7 @@ namespace LogApp.Application.Imports.Commands.UpdateImport
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Import), request.Id);
+                throw new NotFoundException(nameof(Shipment), request.Id);
             }
 
             entity.CarrierId = request.CarrierId;
