@@ -19,13 +19,13 @@ namespace LogApp.Controllers
     public class OrdersController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<OrderVm>>> GetAll()
+        public async Task<ActionResult<List<OrderViewModel>>> GetAll()
         {
             return Ok(await Mediator.Send(new GetOrdersListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderVm>> Get(Guid id)
+        public async Task<ActionResult<OrderViewModel>> Get(Guid id)
         {
             var order = await Mediator.Send(new GetOrderByIdQuery { Id = id });
 

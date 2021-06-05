@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogApp.Application.Orders.Queries.GetOrderById
 {
-    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, OrderVm>
+    public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, OrderViewModel>
     {
         private readonly IApplicationDbContext _context;
 
@@ -16,29 +16,31 @@ namespace LogApp.Application.Orders.Queries.GetOrderById
             _context = context;
         }
 
-        public async Task<OrderVm> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+        public async Task<OrderViewModel> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Orders
-                                        .Include(o => o.Business)
+                                        .Include(o => o.CostCenter)
                                         .Where(c => c.Id == request.Id)
                                         .Where(d => !d.IsDeleted)
-                                        .Select(business => new OrderVm
+                                        .Select(order => new OrderViewModel
                                         {
-                                            Id = business.Id,
-                                            LotName = business.LotName,
-                                            PackingType = business.PackingType,
-                                            GoodsQuantity = business.GoodsQuantity,
-                                            Dimensions = business.Dimensions,
-                                            Weight = business.Weight,
-                                            Stackability = business.Stackability,
-                                            Route = business.Route,
-                                            PickUpDate = business.PickUpDate,
-                                            DeliveryDate = business.DeliveryDate,
-                                            GoodsGL = business.GoodsGL,
-                                            GoodsType = business.GoodsType,
-                                            Notes = business.Notes,
-                                            BusinessName = business.Business.Name,
-                                            CostCentre = business.Business.CostCentre
+                                            Id = order.Id,
+                                            LotName = order.LotName,
+                                            OrderType = order.OrderType,
+                                            PackingType = order.PackingType,
+                                            GoodsQuantity = order.GoodsQuantity,
+                                            Dimensions = order.Dimensions,
+                                            Weight = order.Weight,
+                                            Stackability = order.Stackability,
+                                            Route = order.Route,
+                                            PickUpDate = order.PickUpDate,
+                                            DeliveryDate = order.DeliveryDate,
+                                            GoodsGL = order.GoodsGL,
+                                            GoodsType = order.GoodsType,
+                                            Notes = order.Notes,
+                                            CostCenter = order.CostCenter,
+                                            IsAccepted = order.IsAccepted,
+                                            Shipment = order.Shipment
                                         })
                                         .FirstOrDefaultAsync(cancellationToken);
 

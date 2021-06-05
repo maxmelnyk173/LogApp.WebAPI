@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogApp.Application.Carriers.Queries.GetCarrierById
 {
-    public class GetCarrierByIdQueryHandler : IRequestHandler<GetCarrierByIdQuery, CarrierVm>
+    public class GetCarrierByIdQueryHandler : IRequestHandler<GetCarrierByIdQuery, CarrierViewModel>
     {
         private readonly IApplicationDbContext _context;
 
@@ -16,12 +16,12 @@ namespace LogApp.Application.Carriers.Queries.GetCarrierById
             _context = context;
         }
 
-        public async Task<CarrierVm> Handle(GetCarrierByIdQuery request, CancellationToken cancellationToken)
+        public async Task<CarrierViewModel> Handle(GetCarrierByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Carriers
                                         .Where(c => c.Id == request.Id)
                                         .Where(d => !d.IsDeleted)
-                                        .Select(carrier => new CarrierVm
+                                        .Select(carrier => new CarrierViewModel
                                         {
                                             Id = carrier.Id,
                                             Name = carrier.Name

@@ -22,6 +22,7 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
             {
                 Id = Guid.NewGuid(),
                 LotName = request.LotName,
+                OrderType = request.OrderType,
                 PackingType = request.PackingType,
                 GoodsQuantity = request.GoodsQuantity,
                 Dimensions = request.Dimensions,
@@ -30,7 +31,7 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
                 Route = request.Route,
                 PickUpDate = request.PickUpDate,
                 DeliveryDate = request.DeliveryDate,
-                BusinessId = request.BusinessId,
+                CostCenter = request.CostCenter,
                 GoodsGL = request.GoodsGL,
                 GoodsType = request.GoodsType,
                 Notes = request.Notes

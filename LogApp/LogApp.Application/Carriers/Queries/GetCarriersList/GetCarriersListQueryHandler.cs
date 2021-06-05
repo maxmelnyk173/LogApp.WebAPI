@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LogApp.Application.Carriers.Queries.GetCarriersList
 {
-    public class GetCarriersListQueryHandler : IRequestHandler<GetCarriersListQuery, List<CarrierVm>>
+    public class GetCarriersListQueryHandler : IRequestHandler<GetCarriersListQuery, List<CarrierViewModel>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -17,11 +17,11 @@ namespace LogApp.Application.Carriers.Queries.GetCarriersList
             _context = context;
         }
 
-        public async Task<List<CarrierVm>> Handle(GetCarriersListQuery request, CancellationToken cancellationToken)
+        public async Task<List<CarrierViewModel>> Handle(GetCarriersListQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Carriers
                                         .Where(d => !d.IsDeleted)
-                                        .Select(carrier => new CarrierVm
+                                        .Select(carrier => new CarrierViewModel
                                         {
                                             Id = carrier.Id,
                                             Name = carrier.Name

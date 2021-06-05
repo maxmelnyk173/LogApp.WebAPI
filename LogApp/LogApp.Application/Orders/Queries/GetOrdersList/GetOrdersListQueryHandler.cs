@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LogApp.Application.Orders.Queries.GetOrdersList
 {
-    public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, List<OrderVm>>
+    public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, List<OrderViewModel>>
     {
         private readonly IApplicationDbContext _context;
 
@@ -17,12 +17,12 @@ namespace LogApp.Application.Orders.Queries.GetOrdersList
             _context = context;
         }
 
-        public async Task<List<OrderVm>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
+        public async Task<List<OrderViewModel>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Orders
                                 .Include(b => b.Business)
                                 .Where(d => !d.IsDeleted)
-                                .Select(business => new OrderVm
+                                .Select(business => new OrderViewModel
                                 {
                                     Id = business.Id,
                                     LotName = business.LotName,

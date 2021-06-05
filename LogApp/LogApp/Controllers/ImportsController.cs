@@ -17,15 +17,15 @@ namespace LogApp.Controllers
     public class ImportsController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<ImportVm>>> GetAll()
+        public async Task<ActionResult<List<ShipmentViewModel>>> GetAll()
         {
-            return Ok(await Mediator.Send(new GetImportsListQuery()));
+            return Ok(await Mediator.Send(new GetShipmentsListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ImportVm>> Get(Guid id)
+        public async Task<ActionResult<ShipmentViewModel>> Get(Guid id)
         {
-            var carrier = await Mediator.Send(new GetImportByIdQuery { Id = id });
+            var carrier = await Mediator.Send(new GetShipmentByIdQuery { Id = id });
 
             if (carrier == null)
             {
@@ -38,7 +38,7 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateImportCommand command)
+        public async Task<ActionResult<Guid>> Create(CreateShipmentCommand command)
         {
             var id = await Mediator.Send(command);
 
@@ -48,7 +48,7 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateImportCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateShipmentCommand command)
         {
             if (id != command.Id)
             {
@@ -65,7 +65,7 @@ namespace LogApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await Mediator.Send(new DeleteImportCommand { Id = id });
+            await Mediator.Send(new DeleteShipmentCommand { Id = id });
 
             return NoContent();
         }

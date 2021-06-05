@@ -25,6 +25,7 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
             }
 
             entity.LotName = request.LotName;
+            entity.OrderType = request.OrderType;
             entity.PackingType = request.PackingType;
             entity.GoodsQuantity = request.GoodsQuantity;
             entity.Dimensions = request.Dimensions;
@@ -33,7 +34,7 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
             entity.Route = request.Route;
             entity.PickUpDate = request.PickUpDate;
             entity.DeliveryDate = request.DeliveryDate;
-            entity.BusinessId = request.BusinessId;
+            entity.CostCenter = request.CostCenter;
             entity.GoodsGL = request.GoodsGL;
             entity.GoodsType = request.GoodsType;
             entity.Notes = request.Notes;

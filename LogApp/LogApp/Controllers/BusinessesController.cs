@@ -17,15 +17,15 @@ namespace LogApp.Controllers
     public class BusinessesController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<BusinessVm>>> GetAll()
+        public async Task<ActionResult<List<CostCenterViewModel>>> GetAll()
         {
-            return Ok(await Mediator.Send(new GetBusinessesListQuery()));
+            return Ok(await Mediator.Send(new GetCostCenterListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BusinessVm>> Get(Guid id)
+        public async Task<ActionResult<CostCenterViewModel>> Get(Guid id)
         {
-            var business = await Mediator.Send(new GetBusinessByIdQuery { Id = id });
+            var business = await Mediator.Send(new GetCostCenterByIdQuery { Id = id });
 
             if (business == null)
             {

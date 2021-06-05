@@ -18,13 +18,13 @@ namespace LogApp.Controllers
     public class CarriersController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<CarrierVm>>> GetAll()
+        public async Task<ActionResult<List<CarrierViewModel>>> GetAll()
         {
             return Ok(await Mediator.Send(new GetCarriersListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CarrierVm>> Get(Guid id)
+        public async Task<ActionResult<CarrierViewModel>> Get(Guid id)
         {
             var carrier = await Mediator.Send(new GetCarrierByIdQuery { Id = id });
 

@@ -1,11 +1,10 @@
 ﻿using LogApp.Domain.Entities;
 using LogApp.Domain.Enums;
-using MediatR;
 using System;
 
-namespace LogApp.Application.Orders.Commands.UpdateOrder
+namespace LogApp.Application.Orders.Queries
 {
-    public class UpdateOrderCommand : IRequest
+    public class OrderViewModel
     {
         public Guid Id { get; set; }
 
@@ -38,5 +37,7 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
         public string Notes { get; set; }
 
         public bool IsAccepted { get; set; }
+
+        public Shipment Shipment { get; set; }
     }
 }
