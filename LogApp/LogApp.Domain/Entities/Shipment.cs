@@ -26,6 +26,8 @@ namespace LogApp.Domain.Entities
 
         public string LogisticsNotes { get; set; }
 
+        public WarehouseStatus WarehouseStatus { get; set; }
+
         public ICollection<Order> Orders { get; set; }
     }
 }

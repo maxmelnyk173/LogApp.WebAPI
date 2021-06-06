@@ -21,7 +21,6 @@ namespace LogApp.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly ILogger<AccountController> logger;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
@@ -29,13 +28,11 @@ namespace LogApp.Controllers
 
 
         public AccountController(
-            ILogger<AccountController> logger,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration config)
         {
-            this.logger = logger;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -58,7 +55,8 @@ namespace LogApp.Controllers
                                                 FirstName = u.FirstName,
                                                 LastName = u.LastName,
                                                 Email = u.Email,
-                                                Role = u.Role
+                                                Role = u.Role,
+                                                Position = u.Position
                                             }).ToListAsync();
             return Ok(result);
         }
@@ -74,12 +72,14 @@ namespace LogApp.Controllers
 
                 if (existingRole != null)
                 {
-                    ApplicationUser user = new ApplicationUser();
-                    user.UserName = model.Email;
-                    user.Email = model.Email;
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.Role = model.Role;
+                    ApplicationUser user = new ApplicationUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Role = model.Role
+                    };
 
                     IdentityResult result = userManager.CreateAsync(user, model.Password).Result;
 
@@ -204,12 +204,12 @@ namespace LogApp.Controllers
         private async Task<JwtSecurityToken> CreateToken(ApplicationUser user)
         {
             var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, user.Id),
-                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-                        };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+            };
 
             var roles = await userManager.GetRolesAsync(user);
 

@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
 using System;
@@ -11,18 +12,17 @@ namespace LogApp.Application.Carriers.Commands.CreateCarrier
     {
         private readonly IApplicationDbContext _context;
 
-        public CreateCarrierCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public CreateCarrierCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateCarrierCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Carrier()
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name
-            };
+            var entity = _mapper.Map<Carrier>(request);
 
             _context.Carriers.Add(entity);
 

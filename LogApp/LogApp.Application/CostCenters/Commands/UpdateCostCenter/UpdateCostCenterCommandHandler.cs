@@ -1,5 +1,7 @@
-﻿using LogApp.Application.Common.Exceptions;
+﻿using AutoMapper;
+using LogApp.Application.Common.Exceptions;
 using LogApp.Application.Common.Interfaces;
+using LogApp.Domain.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,9 +12,12 @@ namespace LogApp.Application.CostCenters.Commands.UpdateCostCenter
     {
         private readonly IApplicationDbContext _context;
 
-        public UpdateCostCenterCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public UpdateCostCenterCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateCostCenterCommand request, CancellationToken cancellationToken)
@@ -24,8 +29,7 @@ namespace LogApp.Application.CostCenters.Commands.UpdateCostCenter
                 throw new NotFoundException(nameof(Carriers), request.Id);
             }
 
-            entity.Name = request.Name;
-            entity.CostCentre = request.CostCentre;
+            _mapper.Map<UpdateCostCenterCommand, CostCenter>(request);
 
             await _context.SaveChangesAsync(cancellationToken);
 

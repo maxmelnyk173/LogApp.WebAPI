@@ -2,7 +2,6 @@
 using LogApp.Application.Orders.Commands.DeleteOrder;
 using LogApp.Application.Orders.Commands.UpdateOrder;
 using LogApp.Application.Orders.Queries;
-using LogApp.Application.Orders.Queries.GetEnumValues;
 using LogApp.Application.Orders.Queries.GetOrderById;
 using LogApp.Application.Orders.Queries.GetOrdersList;
 using LogApp.Domain.Enums;
@@ -70,20 +69,6 @@ namespace LogApp.Controllers
             await Mediator.Send(command);
 
             return NoContent();
-        }
-
-        [HttpGet]
-        [Route("packingtypes")]
-        public List<EnumValue> GetPackingType()
-        {
-            return EnumExtensions.GetValues<PackingType>();
-        }
-
-        [HttpGet]
-        [Route("stackability")]
-        public List<EnumValue> GetStackability()
-        {
-            return EnumExtensions.GetValues<Stackability>();
         }
     }
 }

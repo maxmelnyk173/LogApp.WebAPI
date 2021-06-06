@@ -1,5 +1,7 @@
-﻿using LogApp.Application.Common.Exceptions;
+﻿using AutoMapper;
+using LogApp.Application.Common.Exceptions;
 using LogApp.Application.Common.Interfaces;
+using LogApp.Domain.Entities;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,9 +12,12 @@ namespace LogApp.Application.Carriers.Commands.UpdateCarrier
     {
         private readonly IApplicationDbContext _context;
 
-        public UpdateCarrierCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public UpdateCarrierCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateCarrierCommand request, CancellationToken cancellationToken)
@@ -21,10 +26,10 @@ namespace LogApp.Application.Carriers.Commands.UpdateCarrier
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Carriers), request.Id);
+                throw new NotFoundException(nameof(Carrier), request.Id);
             }
 
-            entity.Name = request.Name;
+            _mapper.Map(entity, request);
 
             await _context.SaveChangesAsync(cancellationToken);
 

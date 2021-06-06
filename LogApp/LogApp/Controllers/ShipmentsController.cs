@@ -1,9 +1,9 @@
-﻿using LogApp.Application.Exports.Commands.CreateExport;
-using LogApp.Application.Exports.Commands.DeleteExport;
-using LogApp.Application.Exports.Commands.UpdateExport;
-using LogApp.Application.Exports.Queries;
-using LogApp.Application.Exports.Queries.GetExportById;
-using LogApp.Application.Exports.Queries.GetExportsList;
+﻿using LogApp.Application.Shipments.Commands.CreateShipment;
+using LogApp.Application.Shipments.Commands.DeleteShipment;
+using LogApp.Application.Shipments.Commands.UpdateShipment;
+using LogApp.Application.Shipments.Queries;
+using LogApp.Application.Shipments.Queries.GetShipmentById;
+using LogApp.Application.Shipments.Queries.GetShipmentsList;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,18 +14,18 @@ namespace LogApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExportsController : ApiController
+    public class ShipmentsController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<ExportVm>>> GetAll()
+        public async Task<ActionResult<List<ShipmentViewModel>>> GetAll()
         {
-            return Ok(await Mediator.Send(new GetExportsListQuery()));
+            return Ok(await Mediator.Send(new GetShipmentsListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ExportVm>> Get(Guid id)
+        public async Task<ActionResult<ShipmentViewModel>> Get(Guid id)
         {
-            var carrier = await Mediator.Send(new GetExportByIdQuery { Id = id });
+            var carrier = await Mediator.Send(new GetShipmentByIdQuery { Id = id });
 
             if (carrier == null)
             {
@@ -38,7 +38,7 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateExportCommand command)
+        public async Task<ActionResult<Guid>> Create(CreateShipmentCommand command)
         {
             var id = await Mediator.Send(command);
 
@@ -48,7 +48,7 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateExportCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateShipmentCommand command)
         {
             if (id != command.Id)
             {
@@ -65,7 +65,7 @@ namespace LogApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await Mediator.Send(new DeleteExportCommand { Id = id });
+            await Mediator.Send(new DeleteShipmentCommand { Id = id });
 
             return NoContent();
         }

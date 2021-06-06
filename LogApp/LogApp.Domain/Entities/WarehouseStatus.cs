@@ -24,7 +24,7 @@ namespace LogApp.Domain.Entities
         public DateTime TruckReleasedTime { get; set; }
 
         public string InventoryOrSecurityNotes { get; set; }
-
-        public ICollection<Shipment> Shipments { get; set; }
+        
+        public Shipment Shipment { get; set; }
     }
 }

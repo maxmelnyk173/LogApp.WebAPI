@@ -20,7 +20,7 @@ namespace LogApp.Application.Orders.Queries.GetOrdersList
         public async Task<List<OrderViewModel>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Orders
-                                .Include(b => b.Business)
+                                .Include(b => b.CostCenter)
                                 .Where(d => !d.IsDeleted)
                                 .Select(business => new OrderViewModel
                                 {
@@ -37,8 +37,6 @@ namespace LogApp.Application.Orders.Queries.GetOrdersList
                                     GoodsGL = business.GoodsGL,
                                     GoodsType = business.GoodsType,
                                     Notes = business.Notes,
-                                    BusinessName = business.Business.Name,
-                                    CostCentre = business.Business.CostCentre
                                 }).ToListAsync(cancellationToken);
 
             return result;

@@ -28,8 +28,6 @@ namespace LogApp.Domain.Entities
 
         public DateTime DeliveryDate { get; set; }
 
-        public CostCenter CostCenter { get; set; }
-
         public int GoodsGL { get; set; }
 
         public string GoodsType { get; set; }
@@ -37,6 +35,8 @@ namespace LogApp.Domain.Entities
         public string Notes { get; set; }
 
         public bool IsAccepted { get; set; }
+
+        public CostCenter CostCenter { get; set; }
 
         public Shipment Shipment { get; set; }
     }

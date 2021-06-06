@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -12,22 +13,20 @@ namespace LogApp.Application.Carriers.Queries.GetCarriersList
     {
         private readonly IApplicationDbContext _context;
 
-        public GetCarriersListQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public GetCarriersListQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<CarrierViewModel>> Handle(GetCarriersListQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Carriers
-                                        .Where(d => !d.IsDeleted)
-                                        .Select(carrier => new CarrierViewModel
-                                        {
-                                            Id = carrier.Id,
-                                            Name = carrier.Name
-                                        }).ToListAsync(cancellationToken);
+                                       .Where(d => !d.IsDeleted)
+                                       .ToListAsync(cancellationToken);
 
-            return result;
+            return _mapper.Map<List<CarrierViewModel>>(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -11,25 +12,22 @@ namespace LogApp.Application.CostCenters.Queries.GetCostCenterById
     {
         private readonly IApplicationDbContext _context;
 
-        public GetCostCenterByIdQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public GetCostCenterByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<CostCenterViewModel> Handle(GetCostCenterByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.CostCenters
-                                        .Where(b => b.Id == request.Id)
-                                        .Where(d => !d.IsDeleted)
-                                        .Select(business => new CostCenterViewModel
-                                        {
-                                            Id = business.Id,
-                                            Name = business.Name,
-                                            CostCentre = business.CostCentre
-                                        })
-                                        .FirstOrDefaultAsync(cancellationToken);
+                                       .Where(b => b.Id == request.Id)
+                                       .Where(d => !d.IsDeleted)
+                                       .FirstOrDefaultAsync(cancellationToken);
 
-            return result;
+            return _mapper.Map<CostCenterViewModel>(result);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Exceptions;
+using LogApp.Application.Common.Interfaces;
+using LogApp.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -11,24 +14,26 @@ namespace LogApp.Application.Carriers.Queries.GetCarrierById
     {
         private readonly IApplicationDbContext _context;
 
-        public GetCarrierByIdQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public GetCarrierByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<CarrierViewModel> Handle(GetCarrierByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = await _context.Carriers
+            var carrier = await _context.Carriers
                                         .Where(c => c.Id == request.Id)
                                         .Where(d => !d.IsDeleted)
-                                        .Select(carrier => new CarrierViewModel
-                                        {
-                                            Id = carrier.Id,
-                                            Name = carrier.Name
-                                        })
                                         .FirstOrDefaultAsync(cancellationToken);
+            if(carrier == null)
+            {
+                throw new NotFoundException(nameof(Carrier), request.Id);
+            }
 
-            return result;
+            return _mapper.Map<CarrierViewModel>(carrier);
         }
     }
 }

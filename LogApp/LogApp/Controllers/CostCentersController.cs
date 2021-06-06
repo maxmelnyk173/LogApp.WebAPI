@@ -1,9 +1,9 @@
-﻿using LogApp.Application.Businesses.Commands.CreateBusiness;
-using LogApp.Application.Businesses.Commands.DeleteBusiness;
-using LogApp.Application.Businesses.Commands.UpdateBusiness;
-using LogApp.Application.Businesses.Queries;
-using LogApp.Application.Businesses.Queries.GetBusinessById;
-using LogApp.Application.Businesses.Queries.GetBusinessesList;
+﻿using LogApp.Application.CostCenters.Queries.GetCostCenterList;
+using LogApp.Application.CostCenters.Commands.CreateCostCenter;
+using LogApp.Application.CostCenters.Commands.DeleteCostCenter;
+using LogApp.Application.CostCenters.Commands.UpdateCostCenter;
+using LogApp.Application.CostCenters.Queries;
+using LogApp.Application.CostCenters.Queries.GetCostCenterById;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +14,7 @@ namespace LogApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BusinessesController : ApiController
+    public class CostCentersController : ApiController
     {
         [HttpGet]
         public async Task<ActionResult<List<CostCenterViewModel>>> GetAll()
@@ -38,7 +38,7 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateBusinessCommand command)
+        public async Task<ActionResult<Guid>> Create(CreateCostCenterCommand command)
         {
             var id = await Mediator.Send(command);
 
@@ -50,7 +50,7 @@ namespace LogApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await Mediator.Send(new DeleteBusinessCommand { Id = id });
+            await Mediator.Send(new DeleteCostCenterCommand { Id = id });
 
             return NoContent();
         }
@@ -58,7 +58,7 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateBusinessCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCostCenterCommand command)
         {
             if (id != command.Id)
             {

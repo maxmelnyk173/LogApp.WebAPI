@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
 using System;
@@ -11,19 +12,17 @@ namespace LogApp.Application.CostCenters.Commands.CreateCostCenter
     {
         private readonly IApplicationDbContext _context;
 
-        public CreateCostCenterCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public CreateCostCenterCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateCostCenterCommand request, CancellationToken cancellationToken)
         {
-            var entity = new CostCenter()
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name,
-                CostCentre = request.CostCentre
-            };
+            var entity = _mapper.Map<CostCenter>(request);
 
             _context.CostCenters.Add(entity);
 
