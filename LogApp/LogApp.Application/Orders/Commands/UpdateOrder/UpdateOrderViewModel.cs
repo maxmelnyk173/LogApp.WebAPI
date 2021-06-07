@@ -28,12 +28,12 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
 
         public DateTime DeliveryDate { get; set; }
 
+        public Guid CostCenterId { get; set; }
+
         public int GoodsGL { get; set; }
 
         public string GoodsType { get; set; }
 
         public string Notes { get; set; }
-
-        public CostCenter CostCenter { get; set; }
     }
 }

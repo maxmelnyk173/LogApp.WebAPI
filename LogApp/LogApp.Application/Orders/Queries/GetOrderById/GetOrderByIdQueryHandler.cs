@@ -1,4 +1,6 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
+using LogApp.Application.Orders.Queries.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -11,40 +13,24 @@ namespace LogApp.Application.Orders.Queries.GetOrderById
     {
         private readonly IApplicationDbContext _context;
 
-        public GetOrderByIdQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public GetOrderByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<OrderViewModel> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Orders
                                         .Include(o => o.CostCenter)
+                                        .Include(s => s.Shipment)
                                         .Where(c => c.Id == request.Id)
                                         .Where(d => !d.IsDeleted)
-                                        .Select(order => new OrderViewModel
-                                        {
-                                            Id = order.Id,
-                                            LotName = order.LotName,
-                                            OrderType = order.OrderType,
-                                            PackingType = order.PackingType,
-                                            GoodsQuantity = order.GoodsQuantity,
-                                            Dimensions = order.Dimensions,
-                                            Weight = order.Weight,
-                                            Stackability = order.Stackability,
-                                            Route = order.Route,
-                                            PickUpDate = order.PickUpDate,
-                                            DeliveryDate = order.DeliveryDate,
-                                            GoodsGL = order.GoodsGL,
-                                            GoodsType = order.GoodsType,
-                                            Notes = order.Notes,
-                                            CostCenter = order.CostCenter,
-                                            IsAccepted = order.IsAccepted,
-                                            Shipment = order.Shipment
-                                        })
                                         .FirstOrDefaultAsync(cancellationToken);
 
-            return result;
+            return _mapper.Map<OrderViewModel>(result);
         }
     }
 }

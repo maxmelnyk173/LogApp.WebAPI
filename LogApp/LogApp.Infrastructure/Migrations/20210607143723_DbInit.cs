@@ -260,7 +260,7 @@ namespace LogApp.Infrastructure.Migrations
                     DeletedBy = table.Column<string>(nullable: true),
                     Deleted = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    CarrierId = table.Column<Guid>(nullable: true),
+                    CarrierId = table.Column<Guid>(nullable: false),
                     TruckNumber = table.Column<string>(nullable: true),
                     DriverDetails = table.Column<string>(nullable: true),
                     TruckType = table.Column<string>(nullable: true),
@@ -278,7 +278,7 @@ namespace LogApp.Infrastructure.Migrations
                         column: x => x.CarrierId,
                         principalTable: "Carriers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,11 +303,11 @@ namespace LogApp.Infrastructure.Migrations
                     Route = table.Column<string>(nullable: true),
                     PickUpDate = table.Column<DateTime>(nullable: false),
                     DeliveryDate = table.Column<DateTime>(nullable: false),
+                    CostCenterId = table.Column<Guid>(nullable: false),
                     GoodsGL = table.Column<int>(nullable: false),
                     GoodsType = table.Column<string>(nullable: true),
                     Notes = table.Column<string>(nullable: true),
                     IsAccepted = table.Column<bool>(nullable: false),
-                    CostCenterId = table.Column<Guid>(nullable: true),
                     ShipmentId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -318,7 +318,7 @@ namespace LogApp.Infrastructure.Migrations
                         column: x => x.CostCenterId,
                         principalTable: "CostCenters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Orders_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
@@ -341,7 +341,7 @@ namespace LogApp.Infrastructure.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     CustomsStatus = table.Column<int>(nullable: false),
                     CustomsNotes = table.Column<string>(nullable: true),
-                    ImportStatusId = table.Column<Guid>(nullable: true),
+                    ShipmentStatusId = table.Column<Guid>(nullable: false),
                     ArrivalTime = table.Column<DateTime>(nullable: false),
                     UnloadingReceiving = table.Column<DateTime>(nullable: false),
                     UnloadingGP = table.Column<DateTime>(nullable: false),
@@ -353,17 +353,17 @@ namespace LogApp.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_WarehouseStatuses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WarehouseStatuses_ShipmentStatuses_ImportStatusId",
-                        column: x => x.ImportStatusId,
-                        principalTable: "ShipmentStatuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_WarehouseStatuses_Shipments_ShipmentId",
                         column: x => x.ShipmentId,
                         principalTable: "Shipments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WarehouseStatuses_ShipmentStatuses_ShipmentStatusId",
+                        column: x => x.ShipmentStatusId,
+                        principalTable: "ShipmentStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -442,14 +442,14 @@ namespace LogApp.Infrastructure.Migrations
                 column: "CarrierId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WarehouseStatuses_ImportStatusId",
-                table: "WarehouseStatuses",
-                column: "ImportStatusId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WarehouseStatuses_ShipmentId",
                 table: "WarehouseStatuses",
                 column: "ShipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WarehouseStatuses_ShipmentStatusId",
+                table: "WarehouseStatuses",
+                column: "ShipmentStatusId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -491,10 +491,10 @@ namespace LogApp.Infrastructure.Migrations
                 name: "CostCenters");
 
             migrationBuilder.DropTable(
-                name: "ShipmentStatuses");
+                name: "Shipments");
 
             migrationBuilder.DropTable(
-                name: "Shipments");
+                name: "ShipmentStatuses");
 
             migrationBuilder.DropTable(
                 name: "Carriers");

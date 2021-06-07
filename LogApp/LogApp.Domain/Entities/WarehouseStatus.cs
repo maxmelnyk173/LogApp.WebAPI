@@ -13,7 +13,9 @@ namespace LogApp.Domain.Entities
 
         public string CustomsNotes { get; set; }
 
-        public ShipmentStatus ImportStatus { get; set; }
+        public Guid ShipmentStatusId { get; set; }
+
+        public virtual ShipmentStatus ShipmentStatus { get; set; }
 
         public DateTime ArrivalTime { get; set; }
 
@@ -24,7 +26,9 @@ namespace LogApp.Domain.Entities
         public DateTime TruckReleasedTime { get; set; }
 
         public string InventoryOrSecurityNotes { get; set; }
-        
-        public Shipment Shipment { get; set; }
+
+        public Guid? ShipmentId { get; set; }
+
+        public virtual Shipment Shipment { get; set; }
     }
 }

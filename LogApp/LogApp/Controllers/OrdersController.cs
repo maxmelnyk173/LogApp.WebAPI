@@ -2,9 +2,9 @@
 using LogApp.Application.Orders.Commands.CreateOrder;
 using LogApp.Application.Orders.Commands.DeleteOrder;
 using LogApp.Application.Orders.Commands.UpdateOrder;
-using LogApp.Application.Orders.Queries;
 using LogApp.Application.Orders.Queries.GetOrderById;
 using LogApp.Application.Orders.Queries.GetOrdersList;
+using LogApp.Application.Orders.Queries.ViewModels;
 using LogApp.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

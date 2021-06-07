@@ -8,6 +8,8 @@ namespace LogApp.Domain.Entities
     {
         public Guid Id { get; set; }
 
+        public Guid CarrierId { get; set; }
+
         public Carrier Carrier { get; set; }
 
         public string TruckNumber { get; set; }

@@ -1,8 +1,8 @@
-﻿using LogApp.Domain.Entities;
+﻿ using LogApp.Domain.Entities;
 using LogApp.Domain.Enums;
 using System;
 
-namespace LogApp.Application.Orders.Queries
+namespace LogApp.Application.Orders.Queries.ViewModels
 {
     public class OrderViewModel
     {
@@ -28,7 +28,7 @@ namespace LogApp.Application.Orders.Queries
 
         public DateTime DeliveryDate { get; set; }
 
-        public CostCenter CostCenter { get; set; }
+        public OrderCCViewModel CostCenter { get; set; }
 
         public int GoodsGL { get; set; }
 
@@ -38,6 +38,6 @@ namespace LogApp.Application.Orders.Queries
 
         public bool IsAccepted { get; set; }
 
-        public Shipment Shipment { get; set; }
+        public OrderShipmentViewModel Shipment { get; set; }
     }
 }

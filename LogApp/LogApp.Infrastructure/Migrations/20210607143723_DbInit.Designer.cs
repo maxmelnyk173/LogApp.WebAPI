@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210606055213_DbInit")]
+    [Migration("20210607143723_DbInit")]
     partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -182,7 +182,7 @@ namespace LogApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CostCenterId")
+                    b.Property<Guid>("CostCenterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -266,7 +266,7 @@ namespace LogApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CarrierId")
+                    b.Property<Guid>("CarrierId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -383,9 +383,6 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("DeletedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ImportStatusId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("InventoryOrSecurityNotes")
                         .HasColumnType("nvarchar(max)");
 
@@ -401,6 +398,9 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<Guid?>("ShipmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ShipmentStatusId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("TruckReleasedTime")
                         .HasColumnType("datetime2");
 
@@ -412,9 +412,9 @@ namespace LogApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImportStatusId");
-
                     b.HasIndex("ShipmentId");
+
+                    b.HasIndex("ShipmentStatusId");
 
                     b.ToTable("WarehouseStatuses");
                 });
@@ -631,7 +631,9 @@ namespace LogApp.Infrastructure.Migrations
                 {
                     b.HasOne("LogApp.Domain.Entities.CostCenter", "CostCenter")
                         .WithMany("Orders")
-                        .HasForeignKey("CostCenterId");
+                        .HasForeignKey("CostCenterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LogApp.Domain.Entities.Shipment", "Shipment")
                         .WithMany("Orders")
@@ -642,18 +644,22 @@ namespace LogApp.Infrastructure.Migrations
                 {
                     b.HasOne("LogApp.Domain.Entities.Carrier", "Carrier")
                         .WithMany("Shipments")
-                        .HasForeignKey("CarrierId");
+                        .HasForeignKey("CarrierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LogApp.Domain.Entities.WarehouseStatus", b =>
                 {
-                    b.HasOne("LogApp.Domain.Entities.ShipmentStatus", "ImportStatus")
-                        .WithMany("WarehouseStatuses")
-                        .HasForeignKey("ImportStatusId");
-
                     b.HasOne("LogApp.Domain.Entities.Shipment", "Shipment")
                         .WithMany()
                         .HasForeignKey("ShipmentId");
+
+                    b.HasOne("LogApp.Domain.Entities.ShipmentStatus", "ShipmentStatus")
+                        .WithMany("WarehouseStatuses")
+                        .HasForeignKey("ShipmentStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
