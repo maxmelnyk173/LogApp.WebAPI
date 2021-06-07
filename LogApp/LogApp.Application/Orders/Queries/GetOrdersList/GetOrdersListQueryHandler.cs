@@ -1,4 +1,6 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
+using LogApp.Application.Orders.Queries.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,40 +10,27 @@ using System.Threading.Tasks;
 
 namespace LogApp.Application.Orders.Queries.GetOrdersList
 {
-    public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, List<OrderVm>>
+    public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, List<OrderViewModel>>
     {
         private readonly IApplicationDbContext _context;
 
-        public GetOrdersListQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public GetOrdersListQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<List<OrderVm>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
+        public async Task<List<OrderViewModel>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
         {
             var result = await _context.Orders
-                                .Include(b => b.Business)
+                                .Include(c => c.CostCenter)
+                                .Include(s => s.Shipment)
                                 .Where(d => !d.IsDeleted)
-                                .Select(business => new OrderVm
-                                {
-                                    Id = business.Id,
-                                    LotName = business.LotName,
-                                    PackingType = business.PackingType,
-                                    GoodsQuantity = business.GoodsQuantity,
-                                    Dimensions = business.Dimensions,
-                                    Weight = business.Weight,
-                                    Stackability = business.Stackability,
-                                    Route = business.Route,
-                                    PickUpDate = business.PickUpDate,
-                                    DeliveryDate = business.DeliveryDate,
-                                    GoodsGL = business.GoodsGL,
-                                    GoodsType = business.GoodsType,
-                                    Notes = business.Notes,
-                                    BusinessName = business.Business.Name,
-                                    CostCentre = business.Business.CostCentre
-                                }).ToListAsync(cancellationToken);
+                                .ToListAsync(cancellationToken);
 
-            return result;
+            return _mapper.Map<List<OrderViewModel>>(result);
         }
     }
 }

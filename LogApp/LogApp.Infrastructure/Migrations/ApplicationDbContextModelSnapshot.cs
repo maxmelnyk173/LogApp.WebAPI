@@ -101,44 +101,6 @@ namespace LogApp.Infrastructure.Migrations
                     b.ToTable("PersistedGrants");
                 });
 
-            modelBuilder.Entity("LogApp.Domain.Entities.Business", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CostCentre")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Businesses");
-                });
-
             modelBuilder.Entity("LogApp.Domain.Entities.Carrier", b =>
                 {
                     b.Property<Guid>("Id")
@@ -174,17 +136,14 @@ namespace LogApp.Infrastructure.Migrations
                     b.ToTable("Carriers");
                 });
 
-            modelBuilder.Entity("LogApp.Domain.Entities.Export", b =>
+            modelBuilder.Entity("LogApp.Domain.Entities.CostCenter", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CarrierId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("CostCentre")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -192,22 +151,10 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CustomsNotes")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("Deleted")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DriverDetails")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InventoryOrSecurityNotes")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -219,120 +166,12 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("LoadingTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LogisticsNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PickUpDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Route")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TruckNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TruckReleasedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TruckType")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarrierId");
-
-                    b.ToTable("Exports");
-                });
-
-            modelBuilder.Entity("LogApp.Domain.Entities.Import", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("CarrierId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomsNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CustomsStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Deleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DriverDetails")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ImportStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InventoryOrSecurityNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LogisticsNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PickUpDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Route")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TruckNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TruckReleasedTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TruckType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UnloadingGP")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UnloadingReceiving")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarrierId");
-
-                    b.ToTable("Imports");
+                    b.ToTable("CostCenters");
                 });
 
             modelBuilder.Entity("LogApp.Domain.Entities.Order", b =>
@@ -341,7 +180,7 @@ namespace LogApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BusinessId")
+                    b.Property<Guid>("CostCenterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
@@ -362,9 +201,6 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("Dimensions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ExportId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("GoodsGL")
                         .HasColumnType("int");
 
@@ -374,10 +210,7 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("GoodsType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ImportId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsCompleted")
+                    b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
@@ -395,6 +228,9 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OrderType")
+                        .HasColumnType("int");
+
                     b.Property<int>("PackingType")
                         .HasColumnType("int");
 
@@ -404,6 +240,9 @@ namespace LogApp.Infrastructure.Migrations
                     b.Property<string>("Route")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("ShipmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Stackability")
                         .HasColumnType("int");
 
@@ -412,13 +251,170 @@ namespace LogApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BusinessId");
+                    b.HasIndex("CostCenterId");
 
-                    b.HasIndex("ExportId");
-
-                    b.HasIndex("ImportId");
+                    b.HasIndex("ShipmentId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("LogApp.Domain.Entities.Shipment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CarrierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DriverDetails")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogisticsNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PickUpDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Route")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TruckNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TruckType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarrierId");
+
+                    b.ToTable("Shipments");
+                });
+
+            modelBuilder.Entity("LogApp.Domain.Entities.ShipmentStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShipmentStatuses");
+                });
+
+            modelBuilder.Entity("LogApp.Domain.Entities.WarehouseStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ArrivalTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomsNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CustomsStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Deleted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InventoryOrSecurityNotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ShipmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ShipmentStatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TruckReleasedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UnloadingGP")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("UnloadingReceiving")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShipmentId");
+
+                    b.HasIndex("ShipmentStatusId");
+
+                    b.ToTable("WarehouseStatuses");
                 });
 
             modelBuilder.Entity("LogApp.Infrastructure.Models.ApplicationUser", b =>
@@ -468,6 +464,9 @@ namespace LogApp.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -626,39 +625,39 @@ namespace LogApp.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LogApp.Domain.Entities.Export", b =>
-                {
-                    b.HasOne("LogApp.Domain.Entities.Carrier", "Carrier")
-                        .WithMany("Exports")
-                        .HasForeignKey("CarrierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LogApp.Domain.Entities.Import", b =>
-                {
-                    b.HasOne("LogApp.Domain.Entities.Carrier", "Carrier")
-                        .WithMany("Imports")
-                        .HasForeignKey("CarrierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LogApp.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("LogApp.Domain.Entities.Business", "Business")
+                    b.HasOne("LogApp.Domain.Entities.CostCenter", "CostCenter")
                         .WithMany("Orders")
-                        .HasForeignKey("BusinessId")
+                        .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LogApp.Domain.Entities.Export", "Export")
+                    b.HasOne("LogApp.Domain.Entities.Shipment", "Shipment")
                         .WithMany("Orders")
-                        .HasForeignKey("ExportId");
+                        .HasForeignKey("ShipmentId");
+                });
 
-                    b.HasOne("LogApp.Domain.Entities.Import", "Import")
-                        .WithMany("Orders")
-                        .HasForeignKey("ImportId");
+            modelBuilder.Entity("LogApp.Domain.Entities.Shipment", b =>
+                {
+                    b.HasOne("LogApp.Domain.Entities.Carrier", "Carrier")
+                        .WithMany("Shipments")
+                        .HasForeignKey("CarrierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LogApp.Domain.Entities.WarehouseStatus", b =>
+                {
+                    b.HasOne("LogApp.Domain.Entities.Shipment", "Shipment")
+                        .WithMany()
+                        .HasForeignKey("ShipmentId");
+
+                    b.HasOne("LogApp.Domain.Entities.ShipmentStatus", "ShipmentStatus")
+                        .WithMany("WarehouseStatuses")
+                        .HasForeignKey("ShipmentStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

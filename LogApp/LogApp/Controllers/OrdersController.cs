@@ -1,10 +1,10 @@
-﻿using LogApp.Application.Orders.Commands.CreateOrder;
+﻿using LogApp.Application.Enums;
+using LogApp.Application.Orders.Commands.CreateOrder;
 using LogApp.Application.Orders.Commands.DeleteOrder;
 using LogApp.Application.Orders.Commands.UpdateOrder;
-using LogApp.Application.Orders.Queries;
-using LogApp.Application.Orders.Queries.GetEnumValues;
 using LogApp.Application.Orders.Queries.GetOrderById;
 using LogApp.Application.Orders.Queries.GetOrdersList;
+using LogApp.Application.Orders.Queries.ViewModels;
 using LogApp.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +19,13 @@ namespace LogApp.Controllers
     public class OrdersController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<OrderVm>>> GetAll()
+        public async Task<ActionResult<List<OrderViewModel>>> GetAll()
         {
             return Ok(await Mediator.Send(new GetOrdersListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderVm>> Get(Guid id)
+        public async Task<ActionResult<OrderViewModel>> Get(Guid id)
         {
             var order = await Mediator.Send(new GetOrderByIdQuery { Id = id });
 
@@ -60,30 +60,25 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateOrderCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateOrderViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateOrderCommand { Id = id, Order = body});
 
             return NoContent();
         }
 
         [HttpGet]
         [Route("packingtypes")]
-        public List<EnumValue> GetPackingType()
+        public ActionResult<List<EnumValueViewModel>> GetPackingType()
         {
-            return EnumExtensions.GetValues<PackingType>();
+            return GetEnums.GetValues<PackingType>();
         }
 
         [HttpGet]
         [Route("stackability")]
-        public List<EnumValue> GetStackability()
+        public List<EnumValueViewModel> GetStackability()
         {
-            return EnumExtensions.GetValues<Stackability>();
+            return GetEnums.GetValues<Stackability>();
         }
     }
 }

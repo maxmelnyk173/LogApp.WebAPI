@@ -1,5 +1,6 @@
 ﻿using LogApp.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace LogApp.Infrastructure.Data
 {
@@ -7,7 +8,7 @@ namespace LogApp.Infrastructure.Data
     {
         public static void SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            SeedRoles(roleManager);
+            SeedRolesAsync(roleManager);
             SeedUsers(userManager);
         }
 
@@ -15,71 +16,72 @@ namespace LogApp.Infrastructure.Data
         {
             if (userManager.FindByEmailAsync("superadmin@prod.com").Result == null)
             {
-                ApplicationUser user = new ApplicationUser();
-                user.Email = "superadmin@prod.com";
-                user.FirstName = "Super";
-                user.LastName = "Admin";
+                ApplicationUser user = new ApplicationUser
+                {
+                    Email = "superadmin@prod.com",
+                    FirstName = "Super",
+                    LastName = "Admin",
+                    Role = "SuperAdmin"
+                };
                 user.UserName = user.FirstName + user.LastName;
-                user.Role = "Admin";
 
                 IdentityResult result = userManager.CreateAsync(user, "P@ssw0rd1!").Result;
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, user.Role).Wait();
+                   userManager.AddToRoleAsync(user, user.Role).Wait();
                 }
             }
         }
 
-        private static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        private static void SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
+            if (!roleManager.RoleExistsAsync("SuperAdmin").Result)
+            {
+                IdentityRole role = new IdentityRole { Name = "SuperAdmin" };
+                roleManager.CreateAsync(role).Wait();
+            }
+
             if (!roleManager.RoleExistsAsync("Admin").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Admin";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Admin" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Logistic").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Logistic";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Logistic" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Inventory").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Inventory";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Inventory" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Customs").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Customs";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Customs" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Security").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Security";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Security" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Planning").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Planning";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Planning" };
+                roleManager.CreateAsync(role).Wait();
             }
 
             if (!roleManager.RoleExistsAsync("Other").Result)
             {
-                IdentityRole role = new IdentityRole();
-                role.Name = "Other";
-                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+                IdentityRole role = new IdentityRole { Name = "Other" };
+                roleManager.CreateAsync(role).Wait();
             }
         }
     }

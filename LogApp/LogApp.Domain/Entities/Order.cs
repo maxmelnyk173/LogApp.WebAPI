@@ -10,6 +10,8 @@ namespace LogApp.Domain.Entities
 
         public string LotName { get; set; }
 
+        public OrderType OrderType { get; set; }
+
         public PackingType PackingType { get; set; }
 
         public int GoodsQuantity { get; set; }
@@ -26,9 +28,9 @@ namespace LogApp.Domain.Entities
 
         public DateTime DeliveryDate { get; set; }
 
-        public Guid BusinessId { get; set; }
+        public Guid CostCenterId { get; set; }
 
-        public Business Business { get; set; }
+        public virtual CostCenter CostCenter { get; set; }
 
         public int GoodsGL { get; set; }
 
@@ -36,14 +38,10 @@ namespace LogApp.Domain.Entities
 
         public string Notes { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public bool IsAccepted { get; set; }
 
-        public Guid? ExportId { get; set; }
+        public Guid? ShipmentId { get; set; }
 
-        public Guid? ImportId { get; set; }
-
-        public Export Export { get; set; }
-
-        public Import Import { get; set; }
+        public virtual Shipment Shipment { get; set; }
     }
 }

@@ -18,13 +18,13 @@ namespace LogApp.Controllers
     public class CarriersController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<CarrierVm>>> GetAll()
+        public async Task<ActionResult<List<CarrierViewModel>>> GetAll()
         {
             return Ok(await Mediator.Send(new GetCarriersListQuery()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CarrierVm>> Get(Guid id)
+        public async Task<ActionResult<CarrierViewModel>> Get(Guid id)
         {
             var carrier = await Mediator.Send(new GetCarrierByIdQuery { Id = id });
 
@@ -59,14 +59,9 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCarrierCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCarrierViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateCarrierCommand { Id = id, Carrier = body});
 
             return NoContent();
         }

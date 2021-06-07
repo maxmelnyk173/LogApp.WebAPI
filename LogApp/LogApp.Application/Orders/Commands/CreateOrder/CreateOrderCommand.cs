@@ -1,4 +1,5 @@
-﻿using LogApp.Domain.Enums;
+﻿using LogApp.Domain.Entities;
+using LogApp.Domain.Enums;
 using MediatR;
 using System;
 
@@ -7,6 +8,8 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
     public class CreateOrderCommand : IRequest<Guid>
     {
         public string LotName { get; set; }
+
+        public OrderType OrderType { get; set; }
 
         public PackingType PackingType { get; set; }
 
@@ -24,7 +27,7 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
 
         public DateTime DeliveryDate { get; set; }
 
-        public Guid BusinessId { get; set; }
+        public Guid CostCenterId { get; set; }
 
         public int GoodsGL { get; set; }
 

@@ -7,7 +7,7 @@ namespace LogApp.Application.Carriers.Validators
     {
         public UpdateCarrierCommandValidator()
         {
-            RuleFor(n => n.Name).NotNull().NotEmpty();
+            RuleFor(n => n.Carrier.Name).NotNull().NotEmpty();
         }
     }
 }

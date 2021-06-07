@@ -7,6 +7,18 @@
   <ItemGroup>
     <Compile Remove="Migrations\20210111185142_SoftDeleteItems.cs" />
     <Compile Remove="Migrations\20210111185142_SoftDeleteItems.Designer.cs" />
+    <Compile Remove="Migrations\20210113161830_DBInitialization.cs" />
+    <Compile Remove="Migrations\20210113161830_DBInitialization.Designer.cs" />
+    <Compile Remove="Migrations\20210113222846_SeedAdminAndRoles.cs" />
+    <Compile Remove="Migrations\20210113222846_SeedAdminAndRoles.Designer.cs" />
+    <Compile Remove="Migrations\20210114001235_RoleFieldForUserAdded.cs" />
+    <Compile Remove="Migrations\20210114001235_RoleFieldForUserAdded.Designer.cs" />
+    <Compile Remove="Migrations\20210115162500_RouteFieldAdded.cs" />
+    <Compile Remove="Migrations\20210115162500_RouteFieldAdded.Designer.cs" />
+    <Compile Remove="Migrations\20210606055213_DbInit.cs" />
+    <Compile Remove="Migrations\20210606055213_DbInit.Designer.cs" />
+    <Compile Remove="Migrations\20210607143516_EntitiesUpdate.cs" />
+    <Compile Remove="Migrations\20210607143516_EntitiesUpdate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +35,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LogApp.Application\LogApp.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

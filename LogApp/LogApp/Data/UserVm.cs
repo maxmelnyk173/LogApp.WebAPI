@@ -18,5 +18,7 @@ namespace LogApp.Data
 
         [Required]
         public string Role { get; set; }
+
+        public string Position { get; set; }
     }
 }

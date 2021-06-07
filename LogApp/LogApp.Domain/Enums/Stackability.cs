@@ -2,7 +2,7 @@
 {
     public enum Stackability
     {
-        stackable = 1,
-        nonstackable = 2
+        Yes = 1,
+        No = 2
     }
 }
