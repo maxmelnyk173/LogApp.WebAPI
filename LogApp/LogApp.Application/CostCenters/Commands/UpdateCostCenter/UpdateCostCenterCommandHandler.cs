@@ -29,7 +29,7 @@ namespace LogApp.Application.CostCenters.Commands.UpdateCostCenter
                 throw new NotFoundException(nameof(Carriers), request.Id);
             }
 
-            _mapper.Map<UpdateCostCenterCommand, CostCenter>(request);
+            _mapper.Map(request.CostCenter, entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,9 +15,12 @@ namespace LogApp.Application.ShipmentStatuses.Queries.GetShipmentStatusById
     {
         private readonly IApplicationDbContext _context;
 
-        public GetShipmentStatusByIdQueryHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public GetShipmentStatusByIdQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<ShipmentStatusViewModel> Handle(GetShipmentStatusByIdQuery request, CancellationToken cancellationToken)
@@ -24,14 +28,9 @@ namespace LogApp.Application.ShipmentStatuses.Queries.GetShipmentStatusById
             var result = await _context.ShipmentStatuses
                                         .Where(c => c.Id == request.Id)
                                         .Where(d => !d.IsDeleted)
-                                        .Select(shipment => new ShipmentStatusViewModel
-                                        {
-                                            Id = shipment.Id,
-                                            Name = shipment.Name
-                                        })
                                         .FirstOrDefaultAsync(cancellationToken);
 
-            return result;
+            return _mapper.Map<ShipmentStatusViewModel>(result);
         }
     }
 }

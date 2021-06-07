@@ -59,14 +59,9 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCarrierCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCarrierViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateCarrierCommand { Id = id, Carrier = body});
 
             return NoContent();
         }

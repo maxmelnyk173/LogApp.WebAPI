@@ -9,7 +9,7 @@ namespace LogApp.Application.ShipmentStatuses.Commands.UpdateShipmentStatus
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public UpdateShipmentStatusViewModel Status { get; set; }
     }
 }
 

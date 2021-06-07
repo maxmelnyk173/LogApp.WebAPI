@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
 using System;
@@ -11,31 +12,17 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
     {
         private readonly IApplicationDbContext _context;
 
-        public CreateOrderCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public CreateOrderCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Order()
-            {
-                Id = Guid.NewGuid(),
-                LotName = request.LotName,
-                OrderType = request.OrderType,
-                PackingType = request.PackingType,
-                GoodsQuantity = request.GoodsQuantity,
-                Dimensions = request.Dimensions,
-                Weight = request.Weight,
-                Stackability = request.Stackability,
-                Route = request.Route,
-                PickUpDate = request.PickUpDate,
-                DeliveryDate = request.DeliveryDate,
-                CostCenter = request.CostCenter,
-                GoodsGL = request.GoodsGL,
-                GoodsType = request.GoodsType,
-                Notes = request.Notes
-            };
+            var entity = _mapper.Map<Order>(request);
 
             _context.Orders.Add(entity);
 

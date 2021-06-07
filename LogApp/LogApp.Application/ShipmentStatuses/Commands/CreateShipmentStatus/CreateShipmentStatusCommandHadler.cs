@@ -1,9 +1,8 @@
-﻿using LogApp.Application.Common.Interfaces;
+﻿using AutoMapper;
+using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,18 +12,17 @@ namespace LogApp.Application.ShipmentStatuses.Commands.CreateShipmentStatus
     {
         private readonly IApplicationDbContext _context;
 
-        public CreateShipmentStatusCommandHadler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public CreateShipmentStatusCommandHadler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Guid> Handle(CreateShipmentStatusCommand request, CancellationToken cancellationToken)
         {
-            var entity = new ShipmentStatus()
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name
-            };
+            var entity = _mapper.Map<ShipmentStatus>(request);
 
             _context.ShipmentStatuses.Add(entity);
 

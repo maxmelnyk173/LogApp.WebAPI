@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Exceptions;
+﻿using AutoMapper;
+using LogApp.Application.Common.Exceptions;
 using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
@@ -14,9 +15,12 @@ namespace LogApp.Application.ShipmentStatuses.Commands.UpdateShipmentStatus
     {
         private readonly IApplicationDbContext _context;
 
-        public UpdateShipmentStatusCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public UpdateShipmentStatusCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateShipmentStatusCommand request, CancellationToken cancellationToken)
@@ -28,7 +32,7 @@ namespace LogApp.Application.ShipmentStatuses.Commands.UpdateShipmentStatus
                 throw new NotFoundException(nameof(ShipmentStatus), request.Id);
             }
 
-            entity.Name = request.Name;
+            _mapper.Map(request.Status, entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

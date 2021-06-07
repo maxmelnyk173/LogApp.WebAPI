@@ -29,7 +29,7 @@ namespace LogApp.Application.Carriers.Commands.UpdateCarrier
                 throw new NotFoundException(nameof(Carrier), request.Id);
             }
 
-            _mapper.Map(entity, request);
+            _mapper.Map(request.Carrier, entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

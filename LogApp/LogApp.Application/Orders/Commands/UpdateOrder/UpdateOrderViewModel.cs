@@ -1,11 +1,12 @@
 ﻿using LogApp.Domain.Entities;
 using LogApp.Domain.Enums;
-using MediatR;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace LogApp.Application.Orders.Commands.CreateOrder
+namespace LogApp.Application.Orders.Commands.UpdateOrder
 {
-    public class CreateOrderCommand : IRequest<Guid>
+    public class UpdateOrderViewModel
     {
         public string LotName { get; set; }
 
@@ -33,6 +34,6 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
 
         public string Notes { get; set; }
 
-        public Guid CostCenter { get; set; }
+        public CostCenter CostCenter { get; set; }
     }
 }

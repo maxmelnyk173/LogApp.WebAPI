@@ -7,6 +7,6 @@ namespace LogApp.Application.Carriers.Commands.UpdateCarrier
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public UpdateCarrierViewModel Carrier { get; set; }
     }
 }

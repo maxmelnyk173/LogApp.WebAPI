@@ -58,14 +58,9 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCostCenterCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateCostCenterViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateCostCenterCommand { Id = id, CostCenter = body});
 
             return NoContent();
         }

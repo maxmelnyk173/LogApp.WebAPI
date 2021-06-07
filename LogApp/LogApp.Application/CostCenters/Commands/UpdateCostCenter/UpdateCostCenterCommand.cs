@@ -7,8 +7,6 @@ namespace LogApp.Application.CostCenters.Commands.UpdateCostCenter
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
-
-        public int CostCentre { get; set; }
+        public UpdateCostCenterViewModel CostCenter { get; set; }
     }
 }

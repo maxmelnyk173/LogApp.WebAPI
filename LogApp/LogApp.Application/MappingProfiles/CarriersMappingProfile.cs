@@ -11,6 +11,7 @@ namespace LogApp.Application.MappingProfiles
         public CarriersMappingProfile()
         {
             CreateMap<CreateCarrierCommand, Carrier>();
+            CreateMap<UpdateCarrierCommand, Carrier>();
             CreateMap<Carrier, CarrierViewModel>();
         }
     }

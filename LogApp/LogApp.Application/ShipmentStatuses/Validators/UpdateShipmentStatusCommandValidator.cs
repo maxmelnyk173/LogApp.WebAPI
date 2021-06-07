@@ -10,7 +10,7 @@ namespace LogApp.Application.ShipmentStatuses.Validators
     {
         public UpdateShipmentStatusCommandValidator()
         {
-            RuleFor(n => n.Name).NotNull().NotEmpty();
+            RuleFor(s => s.Status.Name).NotEmpty().NotNull();
         }
     }
 }

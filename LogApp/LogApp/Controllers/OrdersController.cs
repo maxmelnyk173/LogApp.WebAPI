@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Orders.Commands.CreateOrder;
+﻿using LogApp.Application.Enums;
+using LogApp.Application.Orders.Commands.CreateOrder;
 using LogApp.Application.Orders.Commands.DeleteOrder;
 using LogApp.Application.Orders.Commands.UpdateOrder;
 using LogApp.Application.Orders.Queries;
@@ -59,16 +60,25 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateOrderCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateOrderViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateOrderCommand { Id = id, Order = body});
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("packingtypes")]
+        public ActionResult<List<EnumValueViewModel>> GetPackingType()
+        {
+            return GetEnums.GetValues<PackingType>();
+        }
+
+        [HttpGet]
+        [Route("stackability")]
+        public List<EnumValueViewModel> GetStackability()
+        {
+            return GetEnums.GetValues<Stackability>();
         }
     }
 }

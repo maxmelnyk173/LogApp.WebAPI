@@ -7,17 +7,17 @@ namespace LogApp.Application.Orders.Validators
     {
         public UpdateOrderCommandValidator()
         {
-            RuleFor(n => n.LotName).NotNull().NotEmpty().WithMessage("Lot name should not be empty");
-            RuleFor(p => p.PackingType).IsInEnum();
-            RuleFor(g => g.GoodsQuantity).GreaterThan(0).WithMessage("Quantity should be greater than 0");
-            RuleFor(d => d.Dimensions).NotNull().NotEmpty().WithMessage("Dimensions should not be empty");
-            RuleFor(w => w.Weight).GreaterThan(0).WithMessage("Weight should be greater than 0");
-            RuleFor(s => s.Stackability).IsInEnum();
-            RuleFor(r => r.Route).NotNull().NotEmpty().WithMessage("Route should not be empty");
-            RuleFor(p => p.PickUpDate).NotNull();
-            RuleFor(d => d.DeliveryDate).NotNull();
-            RuleFor(gl => gl.GoodsGL).NotEmpty().GreaterThan(0).WithMessage("Gl should not be empty");
-            RuleFor(t => t.GoodsType).NotNull().NotEmpty().WithMessage("Please indicate the type of goods");
+            RuleFor(n => n.Order.LotName).NotNull().NotEmpty().WithMessage("Lot name should not be empty");
+            RuleFor(p => p.Order.PackingType).IsInEnum();
+            RuleFor(g => g.Order.GoodsQuantity).GreaterThan(0).WithMessage("Quantity should be greater than 0");
+            RuleFor(d => d.Order.Dimensions).NotNull().NotEmpty().WithMessage("Dimensions should not be empty");
+            RuleFor(w => w.Order.Weight).GreaterThan(0).WithMessage("Weight should be greater than 0");
+            RuleFor(s => s.Order.Stackability).IsInEnum();
+            RuleFor(r => r.Order.Route).NotNull().NotEmpty().WithMessage("Route should not be empty");
+            RuleFor(p => p.Order.PickUpDate).NotNull();
+            RuleFor(d => d.Order.DeliveryDate).NotNull();
+            RuleFor(gl => gl.Order.GoodsGL).NotEmpty().GreaterThan(0).WithMessage("Gl should not be empty");
+            RuleFor(t => t.Order.GoodsType).NotNull().NotEmpty().WithMessage("Please indicate the type of goods");
         }
     }
 }
