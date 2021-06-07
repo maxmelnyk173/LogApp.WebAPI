@@ -1,2 +1,4 @@
 # LogApp.WebAPI
-Back-end for logistic application using DDD patern
+Back-end part for logistic application with role-base authorization
+Pattern: DDD+CQRS
+Stack: ASP.NET Core, EF Core, AutoMapper, MediatR, FluentValidation
