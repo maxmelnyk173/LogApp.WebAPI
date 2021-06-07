@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using LogApp.Application.Shipments.Queries.ViewModels;
+using MediatR;
 using System;
 
 namespace LogApp.Application.Shipments.Queries.GetShipmentById

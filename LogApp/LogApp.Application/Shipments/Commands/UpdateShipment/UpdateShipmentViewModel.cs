@@ -1,14 +1,11 @@
-﻿using LogApp.Domain.Entities;
-using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace LogApp.Application.Shipments.Commands.CreateShipment
+namespace LogApp.Application.Shipments.Commands.UpdateShipment
 {
-    public class CreateShipmentCommand : IRequest<Guid>
+    public class UpdateShipmentViewModel
     {
-        public Guid Id { get; set; }
-
         public Guid CarrierId { get; set; }
 
         public string TruckNumber { get; set; }

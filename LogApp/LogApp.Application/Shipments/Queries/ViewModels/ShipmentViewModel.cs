@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LogApp.Application.Shipments.Queries
+namespace LogApp.Application.Shipments.Queries.ViewModels
 {
     public class ShipmentViewModel
     {
