@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using LogApp.Application.Shipments.Commands;
 using LogApp.Application.Shipments.Commands.CreateShipment;
-using LogApp.Application.Shipments.Commands.UpdateShipment;
 using LogApp.Application.Shipments.Queries.ViewModels;
 using LogApp.Domain.Entities;
 using System;
@@ -13,8 +13,8 @@ namespace LogApp.Application.MappingProfiles
     {
         public ShipmentMappingProfile()
         {
-            CreateMap<CreateShipmentCommand, Shipment>();
-            CreateMap<UpdateShipmentViewModel, Shipment>();
+            CreateMap<ShipmentCommandViewModel, Shipment>()
+                .ForMember(x => x.Orders, opt => opt.Ignore());
 
             CreateMap<Carrier, ShipmentCarrierViewModel>();
             CreateMap<CostCenter, ShipmentCCViewModel>();

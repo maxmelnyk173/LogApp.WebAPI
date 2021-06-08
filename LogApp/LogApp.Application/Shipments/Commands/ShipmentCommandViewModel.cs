@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LogApp.Application.Shipments.Commands.UpdateShipment
+namespace LogApp.Application.Shipments.Commands
 {
-    public class UpdateShipmentViewModel
+    public class ShipmentCommandViewModel
     {
         public Guid CarrierId { get; set; }
 

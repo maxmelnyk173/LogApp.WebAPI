@@ -8,6 +8,6 @@ namespace LogApp.Application.Shipments.Commands.UpdateShipment
     {
         public Guid Id { get; set; }
 
-        public UpdateShipmentViewModel Shipment { get; set; }
+        public ShipmentCommandViewModel Shipment { get; set; }
     }
 }

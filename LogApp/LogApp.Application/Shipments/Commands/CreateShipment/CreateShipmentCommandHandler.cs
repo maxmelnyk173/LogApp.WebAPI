@@ -22,9 +22,11 @@ namespace LogApp.Application.Shipments.Commands.CreateShipment
 
         public async Task<Guid> Handle(CreateShipmentCommand request, CancellationToken cancellationToken)
         {
-            await AddConnectionToOrder(request);
+            var entity = _mapper.Map<Shipment>(request.Shipment);
 
-            var entity = _mapper.Map<Shipment>(request);
+            entity.Id = Guid.NewGuid();
+
+            await AddConnectionToOrder(entity, request);
 
             _context.Shipments.Add(entity);
 
@@ -33,12 +35,12 @@ namespace LogApp.Application.Shipments.Commands.CreateShipment
             return entity.Id;
         }
 
-        private async Task AddConnectionToOrder(CreateShipmentCommand request)
+        private async Task AddConnectionToOrder(Shipment entity, CreateShipmentCommand request)
         {
-            foreach (var o in request.Orders)
+            foreach (var o in request.Shipment.Orders)
             {
                 var order = await _context.Orders.FindAsync(o);
-                order.ShipmentId = request.Id;
+                order.ShipmentId = entity.Id;
                 order.IsAccepted = true;
             }
         }

@@ -17,8 +17,4 @@
     <ProjectReference Include="..\LogApp.Domain\LogApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shipments\Validators\" />
-  </ItemGroup>
-
 </Project>

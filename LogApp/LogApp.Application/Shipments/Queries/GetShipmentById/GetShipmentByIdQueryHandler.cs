@@ -31,9 +31,7 @@ namespace LogApp.Application.Shipments.Queries.GetShipmentById
                                         .Where(d => !d.IsDeleted)
                                         .FirstOrDefaultAsync(cancellationToken);
 
-            var smth = _mapper.Map<ShipmentViewModel>(result);
-
-            return smth;
+            return _mapper.Map<ShipmentViewModel>(result);
         }
     }
 }

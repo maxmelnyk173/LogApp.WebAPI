@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Shipments.Commands.CreateShipment;
+﻿using LogApp.Application.Shipments.Commands;
+using LogApp.Application.Shipments.Commands.CreateShipment;
 using LogApp.Application.Shipments.Commands.DeleteShipment;
 using LogApp.Application.Shipments.Commands.UpdateShipment;
 using LogApp.Application.Shipments.Queries.GetShipmentById;
@@ -38,9 +39,9 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateShipmentCommand command)
+        public async Task<ActionResult<Guid>> Create(ShipmentCommandViewModel body)
         {
-            var id = await Mediator.Send(command);
+            var id = await Mediator.Send(new CreateShipmentCommand { Shipment = body });
 
             return Ok(id);
         }
@@ -48,7 +49,7 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateShipmentViewModel body)
+        public async Task<ActionResult> Update(Guid id, [FromBody] ShipmentCommandViewModel body)
         {
             await Mediator.Send(new UpdateShipmentCommand { Id = id, Shipment = body});
 
