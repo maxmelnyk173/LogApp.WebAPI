@@ -30,6 +30,8 @@ namespace LogApp
             services.AddControllers();
 
             services.AddSwaggerGen();
+
+            services.AddSwaggerDocumentation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
