@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace LogApp.Application.Shipments.Queries
+namespace LogApp.Application.Shipments.Commands
 {
-    public class ShipmentViewModel
+    public class ShipmentCommandViewModel
     {
-        public Guid Id { get; set; }
-
         public Guid CarrierId { get; set; }
-
-        public string CarrierName { get; set; }
 
         public string TruckNumber { get; set; }
 
@@ -27,6 +24,6 @@ namespace LogApp.Application.Shipments.Queries
 
         public string LogisticsNotes { get; set; }
 
-        public List<ShipmentOrderViewModel> Orders { get; set; }
+        public List<Guid> Orders { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using LogApp.Application.Shipments.Commands.CreateShipment;
+﻿using LogApp.Application.Shipments.Commands;
+using LogApp.Application.Shipments.Commands.CreateShipment;
 using LogApp.Application.Shipments.Commands.DeleteShipment;
 using LogApp.Application.Shipments.Commands.UpdateShipment;
-using LogApp.Application.Shipments.Queries;
 using LogApp.Application.Shipments.Queries.GetShipmentById;
 using LogApp.Application.Shipments.Queries.GetShipmentsList;
+using LogApp.Application.Shipments.Queries.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -38,9 +39,9 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateShipmentCommand command)
+        public async Task<ActionResult<Guid>> Create(ShipmentCommandViewModel body)
         {
-            var id = await Mediator.Send(command);
+            var id = await Mediator.Send(new CreateShipmentCommand { Shipment = body });
 
             return Ok(id);
         }
@@ -48,14 +49,9 @@ namespace LogApp.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateShipmentCommand command)
+        public async Task<ActionResult> Update(Guid id, [FromBody] ShipmentCommandViewModel body)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
-            }
-
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateShipmentCommand { Id = id, Shipment = body});
 
             return NoContent();
         }

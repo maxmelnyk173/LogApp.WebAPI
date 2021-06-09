@@ -2,7 +2,7 @@
 
 namespace LogApp.Data
 {
-    public class LoginUserVm
+    public class LoginUserViewModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]

@@ -1,5 +1,6 @@
 ﻿using LogApp.Data;
 using LogApp.Infrastructure.Models;
+using LogApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,10 @@ namespace LogApp.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration config;
-
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _config;
 
         public AccountController(
             SignInManager<ApplicationUser> signInManager,
@@ -33,105 +33,132 @@ namespace LogApp.Controllers
             RoleManager<IdentityRole> roleManager,
             IConfiguration config)
         {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            this.config = config;
+            _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _config = config;
         }
 
         [HttpGet("roles")]
         public async Task<ActionResult<List<string>>> GetRoles()
         {
-            return Ok(await roleManager.Roles.Select(n => n.Name).ToListAsync());
+            return Ok(await _roleManager.Roles.Select(n => n.Name).ToListAsync());
         }
 
         [HttpGet("users")]
-        public async Task<ActionResult<List<UserVm>>> GetUsers()
+        public async Task<ActionResult<List<UserViewModel>>> GetUsers()
         {
-            var result = await userManager.Users
-                                            .Select(u => new UserVm
-                                            {
+            var result = await _userManager.Users
+                                           .Where(i => i.Role != "SuperAdmin")
+                                           .Select(u => new UserViewModel
+                                           {
                                                 Id = u.Id,
                                                 FirstName = u.FirstName,
                                                 LastName = u.LastName,
                                                 Email = u.Email,
                                                 Role = u.Role,
                                                 Position = u.Position
-                                            }).ToListAsync();
+                                           }).ToListAsync();
             return Ok(result);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] RegisterUserVm model)
+        public async Task<ActionResult> Register([FromBody] RegisterUserViewModel model)
         {
-            var existingUser = await userManager.FindByEmailAsync(model.Email);
+            var existingUser = await _userManager.FindByEmailAsync(model.Email);
 
             if (existingUser == null)
             {
-                var existingRole = await roleManager.FindByNameAsync(model.Role);
+                var existingRole = await _roleManager.FindByNameAsync(model.Role);
 
-                if (existingRole != null)
-                {
-                    ApplicationUser user = new ApplicationUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Role = model.Role
-                    };
-
-                    IdentityResult result = userManager.CreateAsync(user, model.Password).Result;
-
-                    if (result.Succeeded)
-                    {
-                        await userManager.AddToRoleAsync(user, user.Role);
-
-                        return Created("", model);
-                    }
-                }
-                else
+                if (existingRole == null)
                 {
                     return BadRequest("Incorrect Role");
                 }
+
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Role = model.Role,
+                    Position = model.Position
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, user.Role);
+
+                    return Created("", model);
+                }
+
+                return BadRequest(result.Errors);
             }
+
             return BadRequest("A user with this email address already exists");
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginUserVm model)
+        public async Task<ActionResult> Login([FromBody] LoginUserViewModel model)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user != null)
             {
-                var passwordCheck = await signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                var passwordCheck = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
 
                 if (passwordCheck.Succeeded)
                 {
-                    JwtSecurityToken token = await CreateToken(user);
+                    var token = await CreateToken(user);
 
-                    return Ok(new
+                    return Ok(new LoginnedUserViewModel
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                        expiration = token.ValidTo
+                        Token = new JwtSecurityTokenHandler().WriteToken(token),
+                        ExpireAt = token.ValidTo,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        Position = user.Position 
                     });
                 }
             }
+
             return Unauthorized();
+        }
+
+        [Authorize]
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken(RefreshTokenViewModel body)
+        {
+            var user = await _userManager.FindByEmailAsync(body.Email);
+
+            var token = await CreateToken(user);
+
+            return Ok(new LoginnedUserViewModel
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                ExpireAt = token.ValidTo,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Position = user.Position
+            });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser (string id)
         {
-            var user = await userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var result = await userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
 
             if (result.Succeeded)
             {
@@ -142,23 +169,23 @@ namespace LogApp.Controllers
         }
 
         [HttpPut("changepassword")]
-        public async Task<ActionResult> ChangePassword(ChangePasswordVm model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var chechedPassword = await userManager.CheckPasswordAsync(user, model.OldPassword);
+            var chechedPassword = await _userManager.CheckPasswordAsync(user, model.OldPassword);
 
             if (!chechedPassword)
             {
                 return BadRequest("Wrong Password");
             }
 
-            var result = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
             if (result.Succeeded)
             {
@@ -169,29 +196,29 @@ namespace LogApp.Controllers
         }
 
         [HttpPut("changerole")]
-        public async Task<ActionResult> ChangeRole (UserVm model)
+        public async Task<ActionResult> ChangeRole (UserViewModel model)
         {
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            await userManager.RemoveFromRoleAsync(user, user.Role);
+            await _userManager.RemoveFromRoleAsync(user, user.Role);
 
-            var role = await roleManager.FindByNameAsync(model.Role);
+            var role = await _roleManager.FindByNameAsync(model.Role);
 
             if (role == null)
             {
                 return NotFound();
             }
 
-            await userManager.AddToRoleAsync(user, model.Role);
+            await _userManager.AddToRoleAsync(user, model.Role);
 
             user.Role = model.Role;
 
-            var result = await userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
 
             if (result.Succeeded)
             {
@@ -211,21 +238,20 @@ namespace LogApp.Controllers
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
             };
 
-            var roles = await userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Tokens:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                config["Tokens:Issuer"],
-                config["Tokens:Audience"],
-                claims,
-                expires: DateTime.UtcNow.AddHours(3),
-                signingCredentials: credentials
-                );
+                        _config["Tokens:Issuer"],
+                        _config["Tokens:Audience"],
+                        claims,
+                        expires: DateTime.Now.AddMinutes(5),
+                        signingCredentials: credentials);
 
             return token;
         }

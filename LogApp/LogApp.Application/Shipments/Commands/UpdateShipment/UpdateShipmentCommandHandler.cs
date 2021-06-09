@@ -1,4 +1,5 @@
-﻿using LogApp.Application.Common.Exceptions;
+﻿using AutoMapper;
+using LogApp.Application.Common.Exceptions;
 using LogApp.Application.Common.Interfaces;
 using LogApp.Domain.Entities;
 using MediatR;
@@ -12,9 +13,12 @@ namespace LogApp.Application.Shipments.Commands.UpdateShipment
     {
         private readonly IApplicationDbContext _context;
 
-        public UpdateShipmentCommandHandler(IApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public UpdateShipmentCommandHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(UpdateShipmentCommand request, CancellationToken cancellationToken)
@@ -26,18 +30,31 @@ namespace LogApp.Application.Shipments.Commands.UpdateShipment
                 throw new NotFoundException(nameof(Shipment), request.Id);
             }
 
-            entity.TruckNumber = request.TruckNumber;
-            entity.DriverDetails = request.DriverDetails;
-            entity.TruckType = request.TruckType;
-            entity.Route = request.Route;
-            entity.Price = request.Price;
-            entity.PickUpDate = request.PickUpDate;
-            entity.DeliveryDate = request.DeliveryDate;
-            entity.LogisticsNotes = request.LogisticsNotes;
+            _mapper.Map(request.Shipment, entity);
+
+            await UpdateConnectionsToOrders(request);
 
             await _context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
+        }
+
+        private async Task UpdateConnectionsToOrders(UpdateShipmentCommand request)
+        {
+            var orders = _context.Orders.Where(x => x.ShipmentId == request.Id);
+
+            foreach (var o in orders)
+            {
+                o.ShipmentId = null;
+                o.IsAccepted = false;
+            }
+
+            foreach (var o in request.Shipment.Orders)
+            {
+                var order = await _context.Orders.FindAsync(o);
+                order.ShipmentId = request.Id;
+                order.IsAccepted = true;
+            }
         }
     }
 }
