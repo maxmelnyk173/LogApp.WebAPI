@@ -27,6 +27,17 @@ namespace LogApp
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
+
             services.AddControllers();
 
             services.AddSwaggerGen();
@@ -63,10 +74,7 @@ namespace LogApp
 
             app.UseRouting();
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors();
 
             app.UseAuthentication();
 

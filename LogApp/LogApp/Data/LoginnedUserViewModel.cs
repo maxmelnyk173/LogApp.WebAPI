@@ -9,14 +9,6 @@ namespace LogApp.Data
     {
         public string Token { get; set; }
 
-        public DateTime ExpireAt { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Email { get; set; }
-
-        public string Position { get; set; }
+        public UserViewModel User { get; set; }
     }
 }

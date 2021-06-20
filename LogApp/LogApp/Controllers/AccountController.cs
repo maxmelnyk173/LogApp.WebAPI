@@ -117,38 +117,46 @@ namespace LogApp.Controllers
                     return Ok(new LoginnedUserViewModel
                     {
                         Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        ExpireAt = token.ValidTo,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        Email = user.Email,
-                        Position = user.Position 
+                        User = new UserViewModel()
+                        {
+                            Id = user.Id,
+                            FirstName = user.FirstName,
+                            LastName = user.LastName,
+                            Role = user.Role,
+                            Position = user.Position
+                        }
                     });
                 }
+
+                return BadRequest("Wrong password");
             }
 
-            return Unauthorized();
+            return BadRequest("User not found");
         }
 
         [Authorize]
-        [HttpPost("refresh-token")]
-        public async Task<ActionResult> RefreshToken(RefreshTokenViewModel body)
+        [HttpGet("refresh-token/{id}")]
+        public async Task<ActionResult> RefreshToken(string id)
         {
-            var user = await _userManager.FindByEmailAsync(body.Email);
+            var user = await _userManager.FindByIdAsync(id);
 
             var token = await CreateToken(user);
 
             return Ok(new LoginnedUserViewModel
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                ExpireAt = token.ValidTo,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Position = user.Position
+                User = new UserViewModel()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Role = user.Role,
+                    Position = user.Position
+                }
             });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("user/{id}")]
         public async Task<ActionResult> DeleteUser (string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -169,9 +177,9 @@ namespace LogApp.Controllers
         }
 
         [HttpPut("changepassword")]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<ActionResult> ChangePassword(string id, ChangePasswordViewModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
             {
@@ -250,7 +258,7 @@ namespace LogApp.Controllers
                         _config["Tokens:Issuer"],
                         _config["Tokens:Audience"],
                         claims,
-                        expires: DateTime.Now.AddMinutes(5),
+                        expires: DateTime.UtcNow.AddMinutes(5),
                         signingCredentials: credentials);
 
             return token;

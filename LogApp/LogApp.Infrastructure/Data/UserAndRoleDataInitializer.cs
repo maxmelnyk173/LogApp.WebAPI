@@ -14,14 +14,14 @@ namespace LogApp.Infrastructure.Data
 
         private static void SeedUsers(UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByEmailAsync("superadmin@prod.com").Result == null)
+            if (userManager.FindByEmailAsync("admin@prod.com").Result == null)
             {
                 ApplicationUser user = new ApplicationUser
                 {
-                    Email = "superadmin@prod.com",
-                    FirstName = "Super",
-                    LastName = "Admin",
-                    Role = "SuperAdmin"
+                    Email = "admin@prod.com",
+                    FirstName = "Admin",
+                    LastName = "Test",
+                    Role = "Admin"
                 };
                 user.UserName = user.FirstName + user.LastName;
 
@@ -36,12 +36,6 @@ namespace LogApp.Infrastructure.Data
 
         private static void SeedRolesAsync(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.RoleExistsAsync("SuperAdmin").Result)
-            {
-                IdentityRole role = new IdentityRole { Name = "SuperAdmin" };
-                roleManager.CreateAsync(role).Wait();
-            }
-
             if (!roleManager.RoleExistsAsync("Admin").Result)
             {
                 IdentityRole role = new IdentityRole { Name = "Admin" };
