@@ -58,8 +58,49 @@ namespace LogApp.Controllers
                                                 Email = u.Email,
                                                 Role = u.Role,
                                                 Position = u.Position
-                                           }).ToListAsync();
+                                           })
+                                           .ToListAsync();
             return Ok(result);
+        }
+
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<UserViewModel>> GetUser(string id)
+        {
+            var result = await _userManager.Users
+                                           .Select(u => new UserViewModel
+                                           {
+                                               Id = u.Id,
+                                               FirstName = u.FirstName,
+                                               LastName = u.LastName,
+                                               Email = u.Email,
+                                               Role = u.Role,
+                                               Position = u.Position
+                                           })
+                                           .FirstOrDefaultAsync(u => u.Id == id);
+            if(result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound("User not found");
+        }
+
+        [HttpPut("user")]
+        public async Task<ActionResult> UpdateUser([FromBody] UpdateUserViewModel model)
+        {
+            var existingUser = await _userManager.FindByIdAsync(model.Id);
+            if (existingUser != null)
+            {
+                existingUser.FirstName = model.FirstName;
+                existingUser.LastName = model.LastName;
+                existingUser.Position = model.Position;
+
+                await _userManager.UpdateAsync(existingUser);
+
+                return NoContent();
+            }
+
+            return NotFound("User not found");
         }
 
         [HttpPost("register")]
@@ -131,7 +172,7 @@ namespace LogApp.Controllers
                 return BadRequest("Wrong password");
             }
 
-            return BadRequest("User not found");
+            return NotFound("User not found");
         }
 
         [Authorize]
@@ -230,7 +271,7 @@ namespace LogApp.Controllers
 
             if (result.Succeeded)
             {
-                return Ok();
+                return NoContent();
             }
 
             return BadRequest();

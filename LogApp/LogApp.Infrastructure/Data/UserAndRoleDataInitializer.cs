@@ -19,9 +19,10 @@ namespace LogApp.Infrastructure.Data
                 ApplicationUser user = new ApplicationUser
                 {
                     Email = "admin@prod.com",
-                    FirstName = "Admin",
-                    LastName = "Test",
-                    Role = "Admin"
+                    FirstName = "Super",
+                    LastName = "Admin",
+                    Role = "Admin",
+                    Position = "Admin"
                 };
                 user.UserName = user.FirstName + user.LastName;
 
