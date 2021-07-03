@@ -7,6 +7,6 @@ namespace LogApp.Application.CostCenters.Commands.CreateCostCenter
     {
         public string Name { get; set; }
 
-        public int CostCentre { get; set; }
+        public string CostCenterCode { get; set; }
     }
 }

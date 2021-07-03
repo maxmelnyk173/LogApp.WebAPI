@@ -142,8 +142,8 @@ namespace LogApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CostCentre")
-                        .HasColumnType("int");
+                    b.Property<string>("CostCenterCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");

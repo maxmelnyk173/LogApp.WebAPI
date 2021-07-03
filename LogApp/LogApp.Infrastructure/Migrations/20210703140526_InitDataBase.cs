@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LogApp.Infrastructure.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class InitDataBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -82,7 +82,7 @@ namespace LogApp.Infrastructure.Migrations
                     Deleted = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    CostCentre = table.Column<int>(nullable: false)
+                    CostCenterCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

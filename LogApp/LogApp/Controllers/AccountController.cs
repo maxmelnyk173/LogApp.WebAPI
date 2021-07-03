@@ -215,7 +215,7 @@ namespace LogApp.Controllers
                 return NoContent();
             }
 
-            return BadRequest();
+            return BadRequest(result.Errors);
         }
 
         [HttpPut("reset-password")]
@@ -257,7 +257,7 @@ namespace LogApp.Controllers
                 return NoContent();
             }
 
-            return BadRequest();
+            return BadRequest(result.Errors);
         }
 
         [HttpPut("user")]
@@ -278,15 +278,15 @@ namespace LogApp.Controllers
             user.Role = model.Role;
             user.Position = model.Position;
 
-            var result = await _userManager.UpdateAsync(user);
-            await _userManager.AddToRoleAsync(user, model.Role);
+            await _userManager.UpdateAsync(user);
+            var result = await _userManager.AddToRoleAsync(user, model.Role);
 
             if (result.Succeeded)
             {
                 return NoContent();
             }
 
-            return BadRequest();
+            return BadRequest(result.Errors);
         }
 
         private async Task<JwtSecurityToken> CreateToken(ApplicationUser user)

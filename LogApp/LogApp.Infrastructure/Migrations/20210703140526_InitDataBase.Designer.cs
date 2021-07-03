@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LogApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210607143723_DbInit")]
-    partial class DbInit
+    [Migration("20210703140526_InitDataBase")]
+    partial class InitDataBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -144,8 +144,8 @@ namespace LogApp.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CostCentre")
-                        .HasColumnType("int");
+                    b.Property<string>("CostCenterCode")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");

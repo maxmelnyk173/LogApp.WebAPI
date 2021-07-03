@@ -8,6 +8,6 @@ namespace LogApp.Application.CostCenters.Commands.UpdateCostCenter
     {
         public string Name { get; set; }
 
-        public int CostCenter { get; set; }
+        public string CostCenterCode { get; set; }
     }
 }

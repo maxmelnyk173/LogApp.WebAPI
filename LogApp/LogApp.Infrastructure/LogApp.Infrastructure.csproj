@@ -19,6 +19,12 @@
     <Compile Remove="Migrations\20210606055213_DbInit.Designer.cs" />
     <Compile Remove="Migrations\20210607143516_EntitiesUpdate.cs" />
     <Compile Remove="Migrations\20210607143516_EntitiesUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20210607143723_DbInit.cs" />
+    <Compile Remove="Migrations\20210607143723_DbInit.Designer.cs" />
+    <Compile Remove="Migrations\20210703135526_InitDataBase.cs" />
+    <Compile Remove="Migrations\20210703135526_InitDataBase.Designer.cs" />
+    <Compile Remove="Migrations\20210703140127_InitDataBase.cs" />
+    <Compile Remove="Migrations\20210703140127_InitDataBase.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
