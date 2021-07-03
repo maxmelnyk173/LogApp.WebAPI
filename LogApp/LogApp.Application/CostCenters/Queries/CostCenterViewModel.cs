@@ -8,6 +8,6 @@ namespace LogApp.Application.CostCenters.Queries
 
         public string Name { get; set; }
 
-        public int CostCentre { get; set; }
+        public string CostCenterCode { get; set; }
     }
 }

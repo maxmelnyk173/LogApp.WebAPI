@@ -15,7 +15,7 @@ namespace LogApp.Application.MappingProfiles
         {
             CreateMap<CreateCostCenterCommand, CostCenter>();
             CreateMap<UpdateCostCenterViewModel, CostCenter>();
-            CreateMap<CostCenter, CostCenterViewModel>();
+            CreateMap<CostCenter, CostCenterViewModel>().ReverseMap();
         }
     }
 }

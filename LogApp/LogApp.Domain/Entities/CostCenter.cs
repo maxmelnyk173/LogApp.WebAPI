@@ -10,7 +10,7 @@ namespace LogApp.Domain.Entities
 
         public string Name { get; set; }
 
-        public int CostCentre { get; set; }
+        public string CostCenterCode { get; set; }
 
         public ICollection<Order> Orders { get; set; }
     }

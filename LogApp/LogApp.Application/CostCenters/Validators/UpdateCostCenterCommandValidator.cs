@@ -8,7 +8,7 @@ namespace LogApp.Application.CostCenters.Validators
         public UpdateCostCenterCommandValidator()
         {
             RuleFor(n => n.CostCenter.Name).NotNull().NotEmpty();
-            RuleFor(c => c.CostCenter.CostCenter).NotNull().NotEmpty();
+            RuleFor(c => c.CostCenter.CostCenterCode).NotNull().NotEmpty();
         }
     }
 }

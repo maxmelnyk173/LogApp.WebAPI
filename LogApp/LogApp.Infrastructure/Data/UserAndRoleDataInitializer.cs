@@ -73,6 +73,12 @@ namespace LogApp.Infrastructure.Data
                 roleManager.CreateAsync(role).Wait();
             }
 
+            if (!roleManager.RoleExistsAsync("Purchasing").Result)
+            {
+                IdentityRole role = new IdentityRole { Name = "Purchasing" };
+                roleManager.CreateAsync(role).Wait();
+            }
+
             if (!roleManager.RoleExistsAsync("Other").Result)
             {
                 IdentityRole role = new IdentityRole { Name = "Other" };
