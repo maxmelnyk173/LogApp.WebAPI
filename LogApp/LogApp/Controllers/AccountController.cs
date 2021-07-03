@@ -49,7 +49,6 @@ namespace LogApp.Controllers
         public async Task<ActionResult<List<UserViewModel>>> GetUsers()
         {
             var result = await _userManager.Users
-                                           .Where(i => i.Role != "SuperAdmin")
                                            .Select(u => new UserViewModel
                                            {
                                                 Id = u.Id,
@@ -85,8 +84,8 @@ namespace LogApp.Controllers
             return NotFound("User not found");
         }
 
-        [HttpPut("user")]
-        public async Task<ActionResult> UpdateUser([FromBody] UpdateUserViewModel model)
+        [HttpPut("account-data")]
+        public async Task<ActionResult> UpdateAccountDataUser([FromBody] UpdateUserViewModel model)
         {
             var existingUser = await _userManager.FindByIdAsync(model.Id);
             if (existingUser != null)
@@ -103,7 +102,7 @@ namespace LogApp.Controllers
             return NotFound("User not found");
         }
 
-        [HttpPost("register")]
+        [HttpPost("register-user")]
         public async Task<ActionResult> Register([FromBody] RegisterUserViewModel model)
         {
             var existingUser = await _userManager.FindByEmailAsync(model.Email);
@@ -133,7 +132,9 @@ namespace LogApp.Controllers
                 {
                     await _userManager.AddToRoleAsync(user, user.Role);
 
-                    return Created("", model);
+                    var res = await _userManager.FindByEmailAsync(user.Email);
+
+                    return Ok(res.Id);
                 }
 
                 return BadRequest(result.Errors);
@@ -217,21 +218,36 @@ namespace LogApp.Controllers
             return BadRequest();
         }
 
-        [HttpPut("changepassword")]
-        public async Task<ActionResult> ChangePassword(string id, ChangePasswordViewModel model)
+        [HttpPut("reset-password")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            await _userManager.RemovePasswordAsync(user);
+
+            var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPut("change-password")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
 
             if (user == null)
             {
                 return NotFound();
-            }
-
-            var chechedPassword = await _userManager.CheckPasswordAsync(user, model.OldPassword);
-
-            if (!chechedPassword)
-            {
-                return BadRequest("Wrong Password");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -244,8 +260,8 @@ namespace LogApp.Controllers
             return BadRequest();
         }
 
-        [HttpPut("changerole")]
-        public async Task<ActionResult> ChangeRole (UserViewModel model)
+        [HttpPut("user")]
+        public async Task<ActionResult> UpdateUser (UserViewModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
 
@@ -256,18 +272,14 @@ namespace LogApp.Controllers
 
             await _userManager.RemoveFromRoleAsync(user, user.Role);
 
-            var role = await _roleManager.FindByNameAsync(model.Role);
-
-            if (role == null)
-            {
-                return NotFound();
-            }
-
-            await _userManager.AddToRoleAsync(user, model.Role);
-
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
             user.Role = model.Role;
+            user.Position = model.Position;
 
             var result = await _userManager.UpdateAsync(user);
+            await _userManager.AddToRoleAsync(user, model.Role);
 
             if (result.Succeeded)
             {
