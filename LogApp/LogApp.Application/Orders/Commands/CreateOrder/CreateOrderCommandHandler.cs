@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
 using LogApp.Application.Common.Interfaces;
+using LogApp.Application.Orders.ViewModels;
 using LogApp.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogApp.Application.Orders.Commands.CreateOrder
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Guid>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, OrderViewModel>
     {
         private readonly IApplicationDbContext _context;
 
@@ -20,15 +23,20 @@ namespace LogApp.Application.Orders.Commands.CreateOrder
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderViewModel> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var entity = _mapper.Map<Order>(request);
 
-            _context.Orders.Add(entity);
+            var result = _context.Orders.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity.Id;
+            var order = _context.Orders.Where(i => i.Id == result.Entity.Id)
+                                       .Include(o => o.CostCenter)
+                                       .Include(s => s.Shipment)
+                                       .FirstOrDefault();
+
+            return _mapper.Map<OrderViewModel>(order);
         }
     }
 }

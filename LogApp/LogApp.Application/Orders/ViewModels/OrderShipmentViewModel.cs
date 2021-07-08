@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LogApp.Application.Orders.Queries.ViewModels
+namespace LogApp.Application.Orders.ViewModels
 {
     public class OrderShipmentViewModel
     {

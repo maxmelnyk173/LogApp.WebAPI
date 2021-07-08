@@ -3,8 +3,9 @@ using LogApp.Application.Orders.Commands.CreateOrder;
 using LogApp.Application.Orders.Commands.DeleteOrder;
 using LogApp.Application.Orders.Commands.UpdateOrder;
 using LogApp.Application.Orders.Queries.GetOrderById;
+using LogApp.Application.Orders.Queries.GetOrdersByDate;
 using LogApp.Application.Orders.Queries.GetOrdersList;
-using LogApp.Application.Orders.Queries.ViewModels;
+using LogApp.Application.Orders.ViewModels;
 using LogApp.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,12 @@ namespace LogApp.Controllers
             return Ok(await Mediator.Send(new GetOrdersListQuery()));
         }
 
+        [HttpGet("from={fromDate}/to={toDate}")]
+        public async Task<ActionResult<List<OrderViewModel>>> GetByDate(DateTime fromDate, DateTime toDate)
+        {
+            return Ok(await Mediator.Send(new GetOrdersByDateQuery { FromDate = fromDate.ToUniversalTime(), ToDate = toDate.ToUniversalTime() } ));
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderViewModel>> Get(Guid id)
         {
@@ -40,11 +47,11 @@ namespace LogApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> Create(CreateOrderCommand command)
+        public async Task<ActionResult<OrderViewModel>> Create(CreateOrderCommand command)
         {
-            var id = await Mediator.Send(command);
+            var result = await Mediator.Send(command);
 
-            return Ok(id);
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
@@ -58,13 +65,13 @@ namespace LogApp.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateOrderViewModel body)
+        public async Task<ActionResult<OrderViewModel>> Update(Guid id, [FromBody] UpdateOrderViewModel body)
         {
-            await Mediator.Send(new UpdateOrderCommand { Id = id, Order = body});
+            var result = await Mediator.Send(new UpdateOrderCommand { Id = id, Order = body});
 
-            return NoContent();
+            return Ok(result);
         }
 
         [HttpGet]
