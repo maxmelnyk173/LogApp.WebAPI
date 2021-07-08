@@ -1,4 +1,4 @@
-﻿using LogApp.Application.Orders.Queries.ViewModels;
+﻿using LogApp.Application.Orders.ViewModels;
 using MediatR;
 using System.Collections.Generic;
 

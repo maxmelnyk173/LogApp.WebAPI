@@ -2,7 +2,7 @@
 using LogApp.Domain.Enums;
 using System;
 
-namespace LogApp.Application.Orders.Queries.ViewModels
+namespace LogApp.Application.Orders.ViewModels
 {
     public class OrderViewModel
     {
@@ -39,5 +39,9 @@ namespace LogApp.Application.Orders.Queries.ViewModels
         public bool IsAccepted { get; set; }
 
         public OrderShipmentViewModel Shipment { get; set; }
+
+        public Guid CreatedBy { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

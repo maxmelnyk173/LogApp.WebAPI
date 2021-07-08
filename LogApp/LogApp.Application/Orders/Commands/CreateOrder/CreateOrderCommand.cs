@@ -1,11 +1,12 @@
-﻿using LogApp.Domain.Entities;
+﻿using LogApp.Application.Orders.ViewModels;
+using LogApp.Domain.Entities;
 using LogApp.Domain.Enums;
 using MediatR;
 using System;
 
 namespace LogApp.Application.Orders.Commands.CreateOrder
 {
-    public class CreateOrderCommand : IRequest<Guid>
+    public class CreateOrderCommand : IRequest<OrderViewModel>
     {
         public string LotName { get; set; }
 

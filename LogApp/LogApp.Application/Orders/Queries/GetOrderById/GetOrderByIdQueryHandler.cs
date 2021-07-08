@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LogApp.Application.Common.Interfaces;
-using LogApp.Application.Orders.Queries.ViewModels;
+using LogApp.Application.Orders.ViewModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

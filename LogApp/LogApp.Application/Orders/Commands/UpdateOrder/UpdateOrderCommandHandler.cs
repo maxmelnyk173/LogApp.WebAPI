@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using LogApp.Application.Common.Exceptions;
 using LogApp.Application.Common.Interfaces;
+using LogApp.Application.Orders.ViewModels;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogApp.Application.Orders.Commands.UpdateOrder
 {
-    public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
+    public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, OrderViewModel>
     {
         private readonly IApplicationDbContext _context;
 
@@ -19,7 +22,7 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderViewModel> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Orders.FindAsync(request.Id);
 
@@ -32,7 +35,13 @@ namespace LogApp.Application.Orders.Commands.UpdateOrder
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+
+            var order = _context.Orders.Where(i => i.Id == request.Id)
+                                       .Include(o => o.CostCenter)
+                                       .Include(s => s.Shipment)
+                                       .FirstOrDefault();
+
+            return _mapper.Map<OrderViewModel>(order);
         }
     }
 }
